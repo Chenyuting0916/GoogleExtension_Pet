@@ -1,7 +1,7 @@
 {
-  "name": "Getting Started Example",
-  "version": "1.0",
-  "description": "Build an Extension!",
+  "name": "456Getting Started Example",
+  "version": "1.0.0",
+  "description": "陳昱廷的玩具。Build an Extension!",
   "permissions": [
     "activeTab",
     "declarativeContent",
@@ -9,7 +9,8 @@
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "background.js",
+      "jquery-3.4.1.min.js"
     ],
     "persistent": false
   },
@@ -28,6 +29,9 @@
     "48": "images/get_started48.png",
     "128": "images/get_started128.png"
   },
-  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
   "manifest_version": 2
 }
