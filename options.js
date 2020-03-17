@@ -1,21 +1,30 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-'use strict';
-
-const kButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
-
-function constructOptions(kButtonColors) {
-  for (let item of kButtonColors) {
-    let button = document.createElement('button');
-    button.style.backgroundColor = item;
-    button.addEventListener('click', function() {
-      chrome.storage.sync.set({color: item}, function() {
-        console.log('color is ' + item);
-      })
-    });
-    page.appendChild(button);
-  }
+//將設置用chrome.storage.sync儲存
+function save_options() {
+  var color = document.getElementById('color').value;
+  var likesColor = document.getElementById('like').checked;
+  chrome.storage.sync.set({
+      favoriteColor: color,
+      likesColor: likesColor
+  }, function() {
+      //提供儲存成功的提示
+      var status = document.getElementById('status');
+      status.textContent = 'Options saved.';
+      setTimeout(function() {
+          status.textContent = '';
+      }, 750);
+  });
 }
-constructOptions(kButtonColors);
+
+// 將設定調整為預設值的功能
+function restore_options() {
+  //利用get設定預設值並，無值即取得預設置，有值則使用之前儲存的值
+  chrome.storage.sync.get({
+      favoriteColor: 'red',
+      likesColor: true
+  }, function(items) {
+      document.getElementById('color').value = items.favoriteColor;
+      document.getElementById('like').checked = items.likesColor;
+  });
+}
+document.addEventListener('DOMContentLoaded', restore_options);
+document.getElementById('save').addEventListener('click', save_options);
