@@ -3,4 +3,4 @@
 主要目的為了能在使用Google時，能養寵物    
 -   
 成員:      
-Tim   Yoga   Tiffany   Helen   Cindy   Daniel   
+Tim,   Yoga,   Tiffany,   Helen,   Cindy,   Daniel   
