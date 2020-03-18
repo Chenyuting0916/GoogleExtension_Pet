@@ -1,7 +1,7 @@
 {
-  "name": "456Getting Started Example",
+  "name": "GoogleExtension_Pet",
   "version": "1.0.0",
-  "description": "陳昱廷的玩具。Build an Extension!",
+  "description": "Build an Extension!",
   "permissions": [
     "activeTab",
     "declarativeContent",
@@ -9,13 +9,14 @@
   ],
   "background": {
     "scripts": [
-      "background.js",
-      "jquery-3.4.1.min.js"
+      "jquery-3.4.1.min.js",
+      "background.js"
     ],
     "persistent": false
   },
   "page_action": {
     "default_popup": "popup.html",
+    "default_title": "pet",
     "default_icon": {
       "16": "images/get_started16.png",
       "32": "images/get_started32.png",
