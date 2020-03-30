@@ -1,7 +1,7 @@
 {
   "name": "GoogleExtension_Pet",
   "version": "1.0.0",
-  "description": "Build an Extension!",
+  "description": "Developed by FBI & ODOG!",
   "permissions": [
     "activeTab",
     "declarativeContent",
