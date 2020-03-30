@@ -14,9 +14,9 @@
     ],
     "persistent": false
   },
-  "page_action": {
-    "default_popup": "popup.html",
-    "default_title": "pet",
+  "browser_action" : {  
+    "default_title" : "pet",  
+    "default_popup" : "popup.html",
     "default_icon": {
       "16": "images/get_started16.png",
       "32": "images/get_started32.png",
