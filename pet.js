@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(
             case "Cat":
                 petArray.push(new Pet('3-1', 3, 10,Name));
                 break;
-            case "pet4":
+            case "Elizabeth":
                 petArray.push(new Pet('4-1', 3, 10,Name));
                 break;
             case "pet5":
