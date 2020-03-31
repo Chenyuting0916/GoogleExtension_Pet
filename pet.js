@@ -14,7 +14,7 @@ function Pet(index, picNum) {
     this.friendlinessDegree = 0;
     this.image = document.createElement("img");
     this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
-    this.image.id = 'drag-source' + index;
+    this.image.id = 'imgNo' + index;
     this.image.width = "200";
     this.image.style = "position:absolute;";
     // this.image.style = "left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px;";
@@ -23,7 +23,7 @@ function Pet(index, picNum) {
 
     //object methods
     this.drag = function () {
-        let dragSouce = document.querySelector('#drag-source' + index);
+        let dragSouce = document.querySelector('#imgNo' + index);
         let startX = 0;
         let startY = 0;
 
@@ -51,6 +51,8 @@ function Pet(index, picNum) {
             document.removeEventListener('mouseup', stop)
         }
     }
+    
+    
     this.flag = 0;
     this.time = 0;
     this.update = function () {
