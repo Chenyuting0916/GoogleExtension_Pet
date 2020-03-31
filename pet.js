@@ -1,11 +1,29 @@
-
+chrome.runtime.onMessage.addListener(
+    function (request) {
+        switch (request.petName) {
+            case "pet1":
+                petArray.push(new Pet('1-1', 6, 10));
+                break;
+            case "pet2":
+                petArray.push(new Pet('2-1', 3, 10));
+                break;
+            case "pet3":
+                petArray.push(new Pet('3-1', 3, 10));
+                break;
+            case "pet4":
+                petArray.push(new Pet('4-1', 3, 10));
+                break;
+            case "pet5":
+                petArray.push(new Pet('5-1', 3, 10));
+                break;
+            case "pet6":
+                petArray.push(new Pet('6-1', 3, 20));
+                break;
+        }
+    });
 //create object
 var petArray = [];
-petArray.push(new Pet('2-1', 1, 20));
-petArray.push(new Pet('5-1', 3, 20));
-petArray.push(new Pet('6-1', 3, 40));
-petArray.push(new Pet('4-1', 3, 20));
-petArray.push(new Pet('3-1', 3, 20));
+
 
 function Pet(index, picNum, speed) {
     //object properties
@@ -16,19 +34,18 @@ function Pet(index, picNum, speed) {
     this.friendlinessDegree = 0;
     this.image = document.createElement("img");
     this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
-    this.image.id = 'imgNo' + index;
+    this.image.id = 'imgNo' + petArray.length;
     this.image.width = "200";
     this.image.style = "position:absolute;left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px; top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;z-index: 99999;";
     document.getElementsByTagName("body")[0].appendChild(this.image);
 
     //object methods
     this.drag = function () {
-        let dragSouce = document.querySelector('#imgNo' + index);
+        let dragSouce = document.querySelector('#imgNo' + petArray.length);
         let startX = 0;
         let startY = 0;
 
         dragSouce.addEventListener('mousedown', dragStart);
-        console.log(dragSouce);
 
         function dragStart(e) {
             e.preventDefault();

@@ -1,6 +1,19 @@
-document.addEventListener("DOMContentLoaded", function() {
-  var add = document.getElementById("add");
-  add.addEventListener("click", function() {
-    chrome.tabs.executeScript(null, {file: "pet.js"});
+$(document).ready(function () {
+
+  $("#add").click(function () {
+    if ($("#petList").css("display") == "none")
+      $("#petList").css("display", "block");
+    else
+      $("#petList").css("display", "none");
   });
+
+  $("#petList li").click(function (e) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { petName: e.target.className }, function (response) {
+      });
+    });
+  });
+
 });
+
+
