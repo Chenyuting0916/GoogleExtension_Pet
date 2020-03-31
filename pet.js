@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(
     function (request) {
         switch (request.petName) {
-            case "Chicken":
+            case "Pisuke":
                 petArray.push(new Pet('1-1', 6, 10));
                 break;
             case "Bear":
