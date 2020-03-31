@@ -1,14 +1,16 @@
 
 //create object
 var petArray = [];
-petArray.push(new Pet('2-1', 1));
-petArray.push(new Pet('5-1', 3));
-petArray.push(new Pet('4-1', 3));
-petArray.push(new Pet('3-1', 3));
+petArray.push(new Pet('2-1', 1, 20));
+petArray.push(new Pet('5-1', 3, 20));
+petArray.push(new Pet('6-1', 3, 40));
+petArray.push(new Pet('4-1', 3, 20));
+petArray.push(new Pet('3-1', 3, 20));
 
-function Pet(index, picNum) {
+function Pet(index, picNum, speed) {
     //object properties
     this.picIndex = index;
+    this.picSpeed = speed;
     this.hp = 100;
     this.attack = 5;;
     this.friendlinessDegree = 0;
@@ -16,7 +18,7 @@ function Pet(index, picNum) {
     this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
     this.image.id = 'imgNo' + index;
     this.image.width = "200";
-    this.image.style = "position:absolute;left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px; top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;";
+    this.image.style = "position:absolute;left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px; top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;z-index: 99999;";
     document.getElementsByTagName("body")[0].appendChild(this.image);
 
     //object methods
@@ -56,7 +58,7 @@ function Pet(index, picNum) {
     this.update = function () {
         this.time++;
 
-        if (this.time > 20) {
+        if (this.time > this.picSpeed) {
             this.time = 0;
             if (this.flag >= picNum) this.flag = 0;
             this.flag++;
