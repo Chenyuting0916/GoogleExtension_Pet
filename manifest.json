@@ -1,7 +1,7 @@
 {
   "name": "GoogleExtension_Pet",
   "version": "1.0.0",
-  "description": "Build an Extension!",
+  "description": "Developed by FBI & ODOG!",
   "permissions": [
     "activeTab",
     "declarativeContent",
@@ -31,10 +31,9 @@
     ],
     "persistent": false
   },
-  "browser_action": {
-    "default_title": "pet",
-    "default_popup": "popup.html",
-    "default_title": "pet",
+  "browser_action" : {  
+    "default_title" : "pet",  
+    "default_popup" : "popup.html",
     "default_icon": {
       "16": "icon/get_started16.png",
       "32": "icon/get_started32.png",
