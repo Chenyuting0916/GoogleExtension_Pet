@@ -49,8 +49,8 @@ function Pet(index, picNum) {
             document.removeEventListener('mouseup', stop)
         }
     }
-    
-    
+
+
     this.flag = 0;
     this.time = 0;
     this.update = function () {
