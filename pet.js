@@ -16,9 +16,7 @@ function Pet(index, picNum) {
     this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
     this.image.id = 'imgNo' + index;
     this.image.width = "200";
-    this.image.style = "position:absolute;";
-    // this.image.style = "left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px;";
-    // this.image.style = "top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;";
+    this.image.style = "position:absolute;left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px; top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;";
     document.getElementsByTagName("body")[0].appendChild(this.image);
 
     //object methods
