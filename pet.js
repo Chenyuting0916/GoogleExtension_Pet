@@ -3,6 +3,7 @@
 var petArray = [];
 petArray.push(new Pet('2-1', 1));
 petArray.push(new Pet('5-1', 3));
+petArray.push(new Pet('6-1', 3));
 petArray.push(new Pet('4-1', 3));
 petArray.push(new Pet('3-1', 3));
 
