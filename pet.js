@@ -1,23 +1,24 @@
 chrome.runtime.onMessage.addListener(
     function (request) {
-        switch (request.petName) {
+        let Name = request.petName;
+        switch (Name) {
             case "Pisuke":
-                petArray.push(new Pet('1-1', 6, 10));
+                petArray.push(new Pet('1-1', 6, 10,Name));
                 break;
             case "Bear":
-                petArray.push(new Pet('2-1', 3, 10));
+                petArray.push(new Pet('2-1', 3, 10,Name));
                 break;
             case "Cat":
-                petArray.push(new Pet('3-1', 3, 10));
+                petArray.push(new Pet('3-1', 3, 10,Name));
                 break;
             case "pet4":
-                petArray.push(new Pet('4-1', 3, 10));
+                petArray.push(new Pet('4-1', 3, 10,Name));
                 break;
             case "pet5":
-                petArray.push(new Pet('5-1', 3, 10));
+                petArray.push(new Pet('5-1', 3, 10,Name));
                 break;
             case "Capoo":
-                petArray.push(new Pet('6-1', 3, 20));
+                petArray.push(new Pet('6-1', 3, 20,Name));
                 break;
         }
     });
@@ -25,20 +26,28 @@ chrome.runtime.onMessage.addListener(
 var petArray = [];
 
 
-function Pet(index, picNum, speed) {
+function Pet(index, picNum, speed, Petname) {
     //object properties
     this.picIndex = index;
     this.picSpeed = speed;
     this.hp = 100;
     this.attack = 5;;
     this.friendlinessDegree = 0;
+    this.petDiv = document.createElement("div");
+    this.petDiv.id = 'imgNo' + petArray.length;
+    this.namediv = document.createElement("div");
+    this.Content = document.createTextNode(Petname);
+    this.namediv.appendChild(this.Content);
     this.image = document.createElement("img");
     this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
-    this.image.id = 'imgNo' + petArray.length;
     this.image.width = "200";
-    this.image.style = "position:absolute;left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px; top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;z-index: 99999;";
-    document.getElementsByTagName("body")[0].appendChild(this.image);
+    this.image.className = "row";
+    this.petDiv.appendChild(this.namediv);
+    this.petDiv.appendChild(this.image);
 
+    this.petDiv.style = "position:absolute;left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px; top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;z-index: 99999;";
+
+    document.getElementsByTagName("body")[0].appendChild(this.petDiv);
     //object methods
     this.drag = function () {
         let dragSouce = document.querySelector('#imgNo' + petArray.length);
