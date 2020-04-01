@@ -85,7 +85,7 @@ function Pet(index, picNum, speed, Petname) {
             document.removeEventListener('mouseup', stop)
         }
     }
-    
+
 
     this.flag = 0;
     this.time = 0;
@@ -101,15 +101,14 @@ function Pet(index, picNum, speed, Petname) {
             this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
         }
     }
-    this.editPetName = function(){
+    this.editPetName = function () {
         let btnEdit = document.querySelector('#editBtn' + petArray.length);
         let nameLabel = document.querySelector('#PetNameLable' + petArray.length);
         let namediv = document.querySelector('#namediv' + petArray.length);
         btnEdit.addEventListener('click', editNameLabel);
-
-        function editNameLabel(){
-            btnEdit.style="display:none;";
-            nameLabel.style="display:none;";
+        function editNameLabel() {
+            btnEdit.style = "display:none;";
+            nameLabel.style = "display:none;";
             nameInput = document.createElement("input");
             nameInput.setAttribute("type", "text");
             nameInput.setAttribute("value", Petname);
@@ -120,6 +119,15 @@ function Pet(index, picNum, speed, Petname) {
             saveContent = document.createTextNode("Save");
             saveBtn.appendChild(saveContent);
             namediv.appendChild(saveBtn);
+
+            saveBtn.addEventListener('click', displayNameLabel);
+            function displayNameLabel(){
+                saveBtn.style = "display:none;";
+                nameInput.style = "display:none;";
+                btnEdit.style = "display:inline ;";
+                nameLabel.style = "display:inline;";
+                nameLabel.innerHTML = nameInput.value;
+            }
         }
     }
 
