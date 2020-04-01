@@ -31,6 +31,7 @@ chrome.runtime.onMessage.addListener(
         console.log(petArray);
     });
 
+
 console.log(petArray);
 //create object
 function Pet(index, picNum, speed, Petname) {
@@ -43,8 +44,18 @@ function Pet(index, picNum, speed, Petname) {
     this.petDiv = document.createElement("div");
     this.petDiv.id = 'imgNo' + petArray.length;
     this.namediv = document.createElement("div");
+    this.namediv.id = 'namediv' + petArray.length;
+    this.Namelable = document.createElement("LABLE");
+    this.Namelable.id = 'PetNameLable' + petArray.length;
     this.Content = document.createTextNode(Petname);
-    this.namediv.appendChild(this.Content);
+    this.editBtn = document.createElement("BUTTON");
+    this.editBtn.className = "btn btn-info";
+    this.editBtn.id = 'editBtn' + petArray.length;
+    this.btnContent = document.createTextNode("Edit");
+    this.editBtn.appendChild(this.btnContent);
+    this.Namelable.appendChild(this.Content);
+    this.namediv.appendChild(this.Namelable);
+    this.namediv.appendChild(this.editBtn);
     this.image = document.createElement("img");
     this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
     this.image.width = "200";
@@ -97,9 +108,39 @@ function Pet(index, picNum, speed, Petname) {
             this.image.src = chrome.extension.getURL("pet_image/" + this.picIndex + ".png");
         }
     }
+    this.editPetName = function () {
+        let btnEdit = document.querySelector('#editBtn' + petArray.length);
+        let nameLabel = document.querySelector('#PetNameLable' + petArray.length);
+        let namediv = document.querySelector('#namediv' + petArray.length);
+        btnEdit.addEventListener('click', editNameLabel);
+        function editNameLabel() {
+            btnEdit.style = "display:none;";
+            nameLabel.style = "display:none;";
+            nameInput = document.createElement("input");
+            nameInput.setAttribute("type", "text");
+            nameInput.setAttribute("value", Petname);
+            namediv.appendChild(nameInput);
+            nameInput.focus();
+            saveBtn = document.createElement("button");
+            saveBtn.className = "btn btn-info";
+            saveContent = document.createTextNode("Save");
+            saveBtn.appendChild(saveContent);
+            namediv.appendChild(saveBtn);
+
+            saveBtn.addEventListener('click', displayNameLabel);
+            function displayNameLabel() {
+                saveBtn.style = "display:none;";
+                nameInput.style = "display:none;";
+                btnEdit.style = "display:inline ;";
+                nameLabel.style = "display:inline;";
+                nameLabel.innerHTML = nameInput.value;
+            }
+        }
+    }
 
     //object action
     this.drag();
+    this.editPetName();
 }
 
 animate = function () {
@@ -109,3 +150,7 @@ animate = function () {
     }
 }
 animate();
+
+
+
+
