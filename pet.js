@@ -36,6 +36,7 @@ function Pet(index, picNum, speed, Petname) {
     this.petDiv = document.createElement("div");
     this.petDiv.id = 'imgNo' + petArray.length;
     this.namediv = document.createElement("div");
+    this.namediv.style="text-align:center;"
     this.Content = document.createTextNode(Petname);
     this.namediv.appendChild(this.Content);
     this.image = document.createElement("img");
