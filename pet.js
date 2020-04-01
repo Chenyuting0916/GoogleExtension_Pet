@@ -1,31 +1,38 @@
+var petArray = [];
+//build already exist pets
+for (var i = 0; i < petArray.length; i++) {
+    Pet(petArray[i]);
+}
+
+//create new pet
 chrome.runtime.onMessage.addListener(
     function (request) {
         let Name = request.petName;
         switch (Name) {
             case "Pisuke":
-                petArray.push(new Pet('1-1', 6, 10,Name));
+                petArray.push(new Pet('1-1', 6, 10, Name));
                 break;
             case "Bear":
-                petArray.push(new Pet('2-1', 3, 10,Name));
+                petArray.push(new Pet('2-1', 3, 10, Name));
                 break;
             case "Cat":
-                petArray.push(new Pet('3-1', 3, 10,Name));
+                petArray.push(new Pet('3-1', 3, 10, Name));
                 break;
             case "Elizabeth":
-                petArray.push(new Pet('4-1', 3, 10,Name));
+                petArray.push(new Pet('4-1', 3, 10, Name));
                 break;
             case "pet5":
-                petArray.push(new Pet('5-1', 3, 10,Name));
+                petArray.push(new Pet('5-1', 3, 10, Name));
                 break;
             case "Capoo":
-                petArray.push(new Pet('6-1', 3, 20,Name));
+                petArray.push(new Pet('6-1', 3, 20, Name));
                 break;
         }
+        console.log(petArray);
     });
+
+console.log(petArray);
 //create object
-var petArray = [];
-
-
 function Pet(index, picNum, speed, Petname) {
     //object properties
     this.picIndex = index;
@@ -44,10 +51,9 @@ function Pet(index, picNum, speed, Petname) {
     this.image.className = "row";
     this.petDiv.appendChild(this.namediv);
     this.petDiv.appendChild(this.image);
-
     this.petDiv.style = "position:absolute;left:" + Math.ceil(Math.random() * (window.innerWidth - 200)) + "px; top:" + Math.ceil(Math.random() * (window.innerHeight - 200)) + "px;z-index: 99999;";
-
     document.getElementsByTagName("body")[0].appendChild(this.petDiv);
+
     //object methods
     this.drag = function () {
         let dragSouce = document.querySelector('#imgNo' + petArray.length);
@@ -78,12 +84,10 @@ function Pet(index, picNum, speed, Petname) {
         }
     }
 
-
     this.flag = 0;
     this.time = 0;
     this.update = function () {
         this.time++;
-
         if (this.time > this.picSpeed) {
             this.time = 0;
             if (this.flag >= picNum) this.flag = 0;
