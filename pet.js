@@ -3,9 +3,9 @@ chrome.runtime.onMessage.addListener(function (request) {
     chrome.storage.local.get(['Petname'], function (result) {
         let petName = request.petName;
         let Name;
-        if(result.Petname != null){
+        if (result.Petname != null) {
             Name = result.Petname;
-        }else{
+        } else {
             Name = petName;
         }
         switch (petName) {
@@ -15,8 +15,8 @@ chrome.runtime.onMessage.addListener(function (request) {
             case "Bear":
                 petArray.push(new Pet("2-1", 3, 10, Name));
                 break;
-            case "Cat":
-                petArray.push(new Pet("3-1", 3, 10, Name));
+            case "Dragon":
+                petArray.push(new Pet("3-1", 13, 15, Name));
                 break;
             case "Elizabeth":
                 petArray.push(new Pet("4-1", 3, 10, Name));
@@ -114,11 +114,12 @@ function Pet(index, picNum, speed, Petname) {
             this.time = 0;
             if (this.flag >= picNum) this.flag = 0;
             this.flag++;
-            this.picIndex = this.picIndex.substring(0, this.picIndex.length - 1);
-            this.picIndex = this.picIndex + this.flag.toString();
+            this.picIndex = this.picIndex.split('-', 1);
+            this.picIndex = this.picIndex + "-" + this.flag.toString();
             this.image.src = chrome.extension.getURL(
                 "pet_image/" + this.picIndex + ".png"
             );
+            console.log(this.picIndex);
         }
     };
     this.editPetName = function () {
