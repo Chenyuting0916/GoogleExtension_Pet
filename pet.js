@@ -1,43 +1,50 @@
 //create new pet
 chrome.runtime.onMessage.addListener(function (request) {
-    chrome.storage.local.get(['Petname'], function (result) {
-        let petName = request.petName;
-        let Name;
-        if (result.Petname != null) {
-            Name = result.Petname;
-        } else {
-            Name = petName;
-        }
-        switch (petName) {
+    chrome.storage.local.get(["Petname"], function (result) {
+        let petType = request.petName;
+        let nameobj = JSON.parse(result.Petname);
+        switch (petType) {
             case "Pisuke":
-                petArray.push(new Pet("1-1", 6, 10, Name));
+                var name =
+                    nameobj == undefined || nameobj.Pisuke == ""
+                        ? "Pisuke"
+                        : nameobj.Pisuke;
+                petArray.push(new Pet("1-1", 6, 10, name, petType));
                 break;
             case "Bear":
-                petArray.push(new Pet("2-1", 3, 10, Name));
+                var name =
+                    nameobj == undefined || nameobj.Bear == "" ? "Bear" : nameobj.Bear;
+                petArray.push(new Pet("2-1", 3, 10, name, petType));
                 break;
             case "Dragon":
+                var name =
+                    nameobj == undefined || nameobj.Dragon == "" ? "Dragon" : nameobj.Dragon;
                 petArray.push(new Pet("3-1", 13, 15, Name));
                 break;
             case "Elizabeth":
-                petArray.push(new Pet("4-1", 3, 10, Name));
+                var name =
+                    nameobj == undefined || nameobj.Elizabeth == ""
+                        ? "Elizabeth"
+                        : nameobj.Elizabeth;
+                petArray.push(new Pet("4-1", 3, 10, name, petType));
                 break;
             case "pet5":
-                petArray.push(new Pet("5-1", 3, 10, Name));
+                var name =
+                    nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
+                petArray.push(new Pet("5-1", 3, 10, name, petType));
                 break;
             case "Capoo":
-                petArray.push(new Pet("6-1", 3, 20, Name));
+                var name =
+                    nameobj == undefined || nameobj.Capoo == "" ? "Capoo" : nameobj.Capoo;
+                petArray.push(new Pet("6-1", 3, 20, name, petType));
                 break;
         }
-        console.log(petArray);
     });
-
 });
 //create object
 var petArray = [];
 
-console.log(petArray);
-//create object
-function Pet(index, picNum, speed, Petname) {
+function Pet(index, picNum, speed, Petname, petType) {
     //object properties
     this.picIndex = index;
     this.picSpeed = speed;
@@ -82,7 +89,7 @@ function Pet(index, picNum, speed, Petname) {
         let startX = 0;
         let startY = 0;
 
-        dragSouce.addEventListener('mousedown', dragStart);
+        dragSouce.addEventListener("mousedown", dragStart);
 
         function dragStart(e) {
             e.preventDefault();
@@ -119,9 +126,9 @@ function Pet(index, picNum, speed, Petname) {
             this.image.src = chrome.extension.getURL(
                 "pet_image/" + this.picIndex + ".png"
             );
-            console.log(this.picIndex);
         }
     };
+
     this.editPetName = function () {
         let btnEdit = document.querySelector("#editBtn" + petArray.length);
         let nameLabel = document.querySelector("#petNameLable" + petArray.length);
@@ -136,22 +143,88 @@ function Pet(index, picNum, speed, Petname) {
             namediv.appendChild(nameInput);
             nameInput.focus();
             saveBtn = document.createElement("button");
-            saveBtn.className = "btn btn-info";
+            saveBtn.className = petType;
             saveContent = document.createTextNode("Save");
             saveBtn.appendChild(saveContent);
             namediv.appendChild(saveBtn);
-            saveBtn.addEventListener("click", displayNameLabel);
 
-            function displayNameLabel() {
+            saveBtn.addEventListener("click", displayNameLabel);
+            function displayNameLabel(e) {
                 saveBtn.style = "display:none;";
                 nameInput.style = "display:none;";
                 btnEdit.style = "display:inline ;";
                 nameLabel.style = "display:inline;";
                 //nameLabel.innerHTML = nameInput.value;
                 //Petname = nameInput.value;
-                chrome.storage.local.set({ 'Petname': nameInput.value }, function () {
-                    nameLabel.innerHTML = nameInput.value;
-                });
+                var nameObject = {};
+                switch (e.target.className) {
+                    case "Pisuke":
+                        nameObject = {
+                            Pisuke: nameInput.value,
+                            Bear: "",
+                            Cat: "",
+                            Elizabeth: "",
+                            pet5: "",
+                            Capoo: ""
+                        };
+                        break;
+                    case "Bear":
+                        nameObject = {
+                            Pisuke: "",
+                            Bear: nameInput.value,
+                            Cat: "",
+                            Elizabeth: "",
+                            pet5: "",
+                            Capoo: ""
+                        };
+                        break;
+                    case "Dragon":
+                        nameObject = {
+                            Pisuke: "",
+                            Bear: "",
+                            Cat: nameInput.value,
+                            Elizabeth: "",
+                            pet5: "",
+                            Capoo: ""
+                        };
+                        break;
+                    case "Elizabeth":
+                        nameObject = {
+                            Pisuke: "",
+                            Bear: "",
+                            Cat: "",
+                            Elizabeth: nameInput.value,
+                            pet5: "",
+                            Capoo: ""
+                        };
+                        break;
+                    case "pet5":
+                        nameObject = {
+                            Pisuke: "",
+                            Bear: "",
+                            Cat: "",
+                            Elizabeth: "",
+                            pet5: nameInput.value,
+                            Capoo: ""
+                        };
+                        break;
+                    case "Capoo":
+                        nameObject = {
+                            Pisuke: "",
+                            Bear: "",
+                            Cat: "",
+                            Elizabeth: "",
+                            pet5: "",
+                            Capoo: nameInput.value
+                        };
+                        break;
+                }
+                chrome.storage.local.set(
+                    { Petname: JSON.stringify(nameObject) },
+                    function () {
+                        nameLabel.innerHTML = nameInput.value;
+                    }
+                );
             }
         }
     };
