@@ -2,7 +2,7 @@
 chrome.runtime.onMessage.addListener(function (request) {
     chrome.storage.local.get(["Petname"], function (result) {
         let petType = request.petName;
-        let nameobj = JSON.parse(result.Petname);
+        let nameobj = result.Petname == undefined ? undefined : JSON.parse(result.Petname);
         switch (petType) {
             case "Pisuke":
                 var name =
@@ -41,7 +41,7 @@ chrome.runtime.onMessage.addListener(function (request) {
         }
     });
 });
-//create object
+
 var petArray = [];
 
 function Pet(index, picNum, speed, Petname, petType) {
