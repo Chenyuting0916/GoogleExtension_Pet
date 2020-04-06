@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener(function (request) {
             case "Dragon":
                 var name =
                     nameobj == undefined || nameobj.Dragon == "" ? "Dragon" : nameobj.Dragon;
-                petArray.push(new Pet("3-1", 13, 15, Name));
+                petArray.push(new Pet("3-1", 13, 15, name, petType));
                 break;
             case "Elizabeth":
                 var name =
@@ -162,7 +162,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                         nameObject = {
                             Pisuke: nameInput.value,
                             Bear: "",
-                            Cat: "",
+                            Dragon: "",
                             Elizabeth: "",
                             pet5: "",
                             Capoo: ""
@@ -172,7 +172,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                         nameObject = {
                             Pisuke: "",
                             Bear: nameInput.value,
-                            Cat: "",
+                            Dragon: "",
                             Elizabeth: "",
                             pet5: "",
                             Capoo: ""
@@ -182,7 +182,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                         nameObject = {
                             Pisuke: "",
                             Bear: "",
-                            Cat: nameInput.value,
+                            Dragon: nameInput.value,
                             Elizabeth: "",
                             pet5: "",
                             Capoo: ""
@@ -192,7 +192,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                         nameObject = {
                             Pisuke: "",
                             Bear: "",
-                            Cat: "",
+                            Dragon: "",
                             Elizabeth: nameInput.value,
                             pet5: "",
                             Capoo: ""
@@ -202,7 +202,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                         nameObject = {
                             Pisuke: "",
                             Bear: "",
-                            Cat: "",
+                            Dragon: "",
                             Elizabeth: "",
                             pet5: nameInput.value,
                             Capoo: ""
@@ -212,7 +212,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                         nameObject = {
                             Pisuke: "",
                             Bear: "",
-                            Cat: "",
+                            Dragon: "",
                             Elizabeth: "",
                             pet5: "",
                             Capoo: nameInput.value
