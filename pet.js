@@ -60,11 +60,9 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     this.nameLable = document.createElement("LABLE");
     this.nameLable.id = "petNameLable" + petArray.length;
     this.Content = document.createTextNode(Petname);
-    this.editBtn = document.createElement("BUTTON");
-    this.editBtn.className = "btn btn-info";
+    this.editBtn = document.createElement("i");
+    this.editBtn.className = "fa fa-pen-square";
     this.editBtn.id = "editBtn" + petArray.length;
-    this.btnContent = document.createTextNode("Edit");
-    this.editBtn.appendChild(this.btnContent);
     this.nameLable.appendChild(this.Content);
     this.nameDiv.appendChild(this.nameLable);
     this.nameDiv.appendChild(this.editBtn);
@@ -143,10 +141,8 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             nameInput.setAttribute("value", Petname);
             namediv.appendChild(nameInput);
             nameInput.focus();
-            saveBtn = document.createElement("button");
-            saveBtn.className = petType;
-            saveContent = document.createTextNode("Save");
-            saveBtn.appendChild(saveContent);
+            saveBtn = document.createElement("i");
+            saveBtn.className = "fa fa-check-circle ";
             namediv.appendChild(saveBtn);
 
             saveBtn.addEventListener("click", displayNameLabel);
@@ -172,7 +168,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                             PinkBear: ""
                         };
                     }
-                    switch (e.target.className) {
+                    switch (petType) {
                         case "Pisuke":
                             nameObject.Pisuke = nameInput.value;
                             break;
@@ -196,6 +192,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                         { Petname: JSON.stringify(nameObject) },
                         function () {
                             nameLabel.innerHTML = nameInput.value;
+                            console.log(JSON.stringify(nameObject));
                         }
                     );
                 });
@@ -203,7 +200,9 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             }
         }
     };
-
+    document.getElementsByTagName("head")[0].insertAdjacentHTML(
+        "beforeend",
+        "<link type=\"text/css\" rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\" />");
     //object action
     this.drag();
     this.editPetName();
