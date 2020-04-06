@@ -60,7 +60,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     this.nameLable = document.createElement("LABLE");
     this.nameLable.id = "petNameLable" + petArray.length;
     this.Content = document.createTextNode(Petname);
-    this.editBtn = document.createElement("BUTTON");
+    this.editBtn = document.createElement("i");
     this.editBtn.className = "fa fa-pen-square";
     this.editBtn.id = "editBtn" + petArray.length;
     this.nameLable.appendChild(this.Content);
@@ -141,7 +141,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             nameInput.setAttribute("value", Petname);
             namediv.appendChild(nameInput);
             nameInput.focus();
-            saveBtn = document.createElement("button");
+            saveBtn = document.createElement("i");
             saveBtn.className = "fa fa-check-circle ";
             namediv.appendChild(saveBtn);
 
