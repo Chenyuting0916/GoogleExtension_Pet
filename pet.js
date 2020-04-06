@@ -3,7 +3,6 @@ chrome.runtime.onMessage.addListener(function (request) {
     chrome.storage.local.get(["Petname"], function (result) {
         let petType = request.petName;
         let nameobj = result.Petname == undefined ? undefined : JSON.parse(result.Petname);
-        console.log(nameobj);
         switch (petType) {
             case "Pisuke":
                 var name =
@@ -44,7 +43,6 @@ chrome.runtime.onMessage.addListener(function (request) {
 });
 
 var petArray = [];
-
 function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     //object properties
     this.picIndex = index;
@@ -74,14 +72,19 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     this.image.className = "row";
     this.petDiv.appendChild(this.nameDiv);
     this.petDiv.appendChild(this.image);
+    this.x = Math.ceil(Math.random() * (window.innerWidth - 200));
+    this.y = Math.ceil(Math.random() * (window.innerHeight - 200));
     this.petDiv.style =
         "position:fixed;left:" +
-        Math.ceil(Math.random() * (window.innerWidth - 200)) +
+        this.x +
         "px; top:" +
-        Math.ceil(Math.random() * (window.innerHeight - 200)) +
+        this.y +
         "px;z-index: 99999;";
     document.getElementsByTagName("body")[0].appendChild(this.petDiv);
+    this.gravity = 0.15;
+    this.gravitySpeed = 0;
 
+    ifMouseDown = false;
     //object methods
     this.drag = function () {
         let dragSouce = document.querySelector("#imgNo" + petArray.length);
@@ -97,6 +100,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             startY = e.clientY - dragSouce.offsetTop;
             document.addEventListener("mousemove", move);
             document.addEventListener("mouseup", stop);
+            ifMouseDown = true;
         }
         function move(e) {
             //計算出拖曳物件最左上角座標
@@ -109,6 +113,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
         function stop() {
             document.removeEventListener("mousemove", move);
             document.removeEventListener("mouseup", stop);
+            ifMouseDown = false;
         }
     };
 
@@ -125,6 +130,15 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             this.image.src = chrome.extension.getURL(
                 "pet_image/" + this.picIndex + ".png"
             );
+        }
+        if (this.y < window.innerHeight - 200) {
+            this.gravitySpeed += this.gravity;
+            this.y += this.gravitySpeed;
+            this.petDiv.style.top = this.y + "px";
+        }
+        else if (this.y > parseInt(this.petDiv.style.top) && !ifMouseDown) {
+            this.gravitySpeed = 0;
+            this.y = parseInt(this.petDiv.style.top);
         }
     };
 
@@ -156,7 +170,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                     nameLabel.style = "display:inline;";
                     //nameLabel.innerHTML = nameInput.value;
                     //Petname = nameInput.value;
-                    
+
                     var nameObject = newpetNameObj;
                     if (nameObject == undefined) {
                         nameObject = {
@@ -192,18 +206,18 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                         { Petname: JSON.stringify(nameObject) },
                         function () {
                             nameLabel.innerHTML = nameInput.value;
-                            console.log(JSON.stringify(nameObject));
                         }
                     );
                 });
-                
+
             }
         }
     };
+
+    //object action
     document.getElementsByTagName("head")[0].insertAdjacentHTML(
         "beforeend",
         "<link type=\"text/css\" rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\" />");
-    //object action
     this.drag();
     this.editPetName();
 }
