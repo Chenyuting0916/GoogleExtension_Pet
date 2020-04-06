@@ -33,9 +33,9 @@ chrome.runtime.onMessage.addListener(function (request) {
                     nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
                 petArray.push(new Pet("5-1", 3, 10, name, petType));
                 break;
-            case "Capoo":
+            case "PinkBear":
                 var name =
-                    nameobj == undefined || nameobj.Capoo == "" ? "Capoo" : nameobj.Capoo;
+                    nameobj == undefined || nameobj.Capoo == "" ? "PinkBear" : nameobj.Capoo;
                 petArray.push(new Pet("6-1", 3, 20, name, petType));
                 break;
         }
@@ -165,7 +165,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                             Dragon: "",
                             Elizabeth: "",
                             pet5: "",
-                            Capoo: ""
+                            PinkBear: ""
                         };
                         break;
                     case "Bear":
@@ -175,7 +175,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                             Dragon: "",
                             Elizabeth: "",
                             pet5: "",
-                            Capoo: ""
+                            PinkBear: ""
                         };
                         break;
                     case "Dragon":
@@ -185,7 +185,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                             Dragon: nameInput.value,
                             Elizabeth: "",
                             pet5: "",
-                            Capoo: ""
+                            PinkBear: ""
                         };
                         break;
                     case "Elizabeth":
@@ -195,7 +195,7 @@ function Pet(index, picNum, speed, Petname, petType) {
                             Dragon: "",
                             Elizabeth: nameInput.value,
                             pet5: "",
-                            Capoo: ""
+                            PinkBear: ""
                         };
                         break;
                     case "pet5":
@@ -205,17 +205,17 @@ function Pet(index, picNum, speed, Petname, petType) {
                             Dragon: "",
                             Elizabeth: "",
                             pet5: nameInput.value,
-                            Capoo: ""
+                            PinkBear: ""
                         };
                         break;
-                    case "Capoo":
+                    case "PinkBear":
                         nameObject = {
                             Pisuke: "",
                             Bear: "",
                             Dragon: "",
                             Elizabeth: "",
                             pet5: "",
-                            Capoo: nameInput.value
+                            PinkBear: nameInput.value
                         };
                         break;
                 }
