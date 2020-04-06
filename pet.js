@@ -3,40 +3,41 @@ chrome.runtime.onMessage.addListener(function (request) {
     chrome.storage.local.get(["Petname"], function (result) {
         let petType = request.petName;
         let nameobj = result.Petname == undefined ? undefined : JSON.parse(result.Petname);
+        console.log(nameobj);
         switch (petType) {
             case "Pisuke":
                 var name =
                     nameobj == undefined || nameobj.Pisuke == ""
                         ? "Pisuke"
                         : nameobj.Pisuke;
-                petArray.push(new Pet("1-1", 6, 10, name, petType));
+                petArray.push(new Pet("1-1", 6, 10, name, petType, nameobj));
                 break;
             case "Bear":
                 var name =
                     nameobj == undefined || nameobj.Bear == "" ? "Bear" : nameobj.Bear;
-                petArray.push(new Pet("2-1", 3, 10, name, petType));
+                petArray.push(new Pet("2-1", 3, 10, name, petType, nameobj));
                 break;
             case "Dragon":
                 var name =
                     nameobj == undefined || nameobj.Dragon == "" ? "Dragon" : nameobj.Dragon;
-                petArray.push(new Pet("3-1", 13, 15, name, petType));
+                petArray.push(new Pet("3-1", 13, 15, name, petType, nameobj));
                 break;
             case "Elizabeth":
                 var name =
                     nameobj == undefined || nameobj.Elizabeth == ""
                         ? "Elizabeth"
                         : nameobj.Elizabeth;
-                petArray.push(new Pet("4-1", 3, 10, name, petType));
+                petArray.push(new Pet("4-1", 3, 10, name, petType, nameobj));
                 break;
             case "pet5":
                 var name =
                     nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
-                petArray.push(new Pet("5-1", 3, 10, name, petType));
+                petArray.push(new Pet("5-1", 3, 10, name, petType, nameobj));
                 break;
             case "PinkBear":
                 var name =
-                    nameobj == undefined || nameobj.Capoo == "" ? "PinkBear" : nameobj.Capoo;
-                petArray.push(new Pet("6-1", 3, 20, name, petType));
+                    nameobj == undefined || nameobj.PinkBear == "" ? "PinkBear" : nameobj.PinkBear;
+                petArray.push(new Pet("6-1", 3, 20, name, petType, nameobj));
                 break;
         }
     });
@@ -44,7 +45,7 @@ chrome.runtime.onMessage.addListener(function (request) {
 
 var petArray = [];
 
-function Pet(index, picNum, speed, Petname, petType) {
+function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     //object properties
     this.picIndex = index;
     this.picSpeed = speed;
@@ -156,68 +157,91 @@ function Pet(index, picNum, speed, Petname, petType) {
                 nameLabel.style = "display:inline;";
                 //nameLabel.innerHTML = nameInput.value;
                 //Petname = nameInput.value;
-                var nameObject = {};
-                switch (e.target.className) {
-                    case "Pisuke":
-                        nameObject = {
-                            Pisuke: nameInput.value,
-                            Bear: "",
-                            Dragon: "",
-                            Elizabeth: "",
-                            pet5: "",
-                            PinkBear: ""
-                        };
-                        break;
-                    case "Bear":
-                        nameObject = {
-                            Pisuke: "",
-                            Bear: nameInput.value,
-                            Dragon: "",
-                            Elizabeth: "",
-                            pet5: "",
-                            PinkBear: ""
-                        };
-                        break;
-                    case "Dragon":
-                        nameObject = {
-                            Pisuke: "",
-                            Bear: "",
-                            Dragon: nameInput.value,
-                            Elizabeth: "",
-                            pet5: "",
-                            PinkBear: ""
-                        };
-                        break;
-                    case "Elizabeth":
-                        nameObject = {
-                            Pisuke: "",
-                            Bear: "",
-                            Dragon: "",
-                            Elizabeth: nameInput.value,
-                            pet5: "",
-                            PinkBear: ""
-                        };
-                        break;
-                    case "pet5":
-                        nameObject = {
-                            Pisuke: "",
-                            Bear: "",
-                            Dragon: "",
-                            Elizabeth: "",
-                            pet5: nameInput.value,
-                            PinkBear: ""
-                        };
-                        break;
-                    case "PinkBear":
-                        nameObject = {
-                            Pisuke: "",
-                            Bear: "",
-                            Dragon: "",
-                            Elizabeth: "",
-                            pet5: "",
-                            PinkBear: nameInput.value
-                        };
-                        break;
+                var nameObject = petNameObj;
+                if (nameObject == undefined) {
+                    switch (e.target.className) {
+                        case "Pisuke":
+                            nameObject = {
+                                Pisuke: nameInput.value,
+                                Bear: "",
+                                Dragon: "",
+                                Elizabeth: "",
+                                pet5: "",
+                                PinkBear: ""
+                            };
+                            break;
+                        case "Bear":
+                            nameObject = {
+                                Pisuke: "",
+                                Bear: nameInput.value,
+                                Dragon: "",
+                                Elizabeth: "",
+                                pet5: "",
+                                PinkBear: ""
+                            };
+                            break;
+                        case "Dragon":
+                            nameObject = {
+                                Pisuke: "",
+                                Bear: "",
+                                Dragon: nameInput.value,
+                                Elizabeth: "",
+                                pet5: "",
+                                PinkBear: ""
+                            };
+                            break;
+                        case "Elizabeth":
+                            nameObject = {
+                                Pisuke: "",
+                                Bear: "",
+                                Dragon: "",
+                                Elizabeth: nameInput.value,
+                                pet5: "",
+                                PinkBear: ""
+                            };
+                            break;
+                        case "pet5":
+                            nameObject = {
+                                Pisuke: "",
+                                Bear: "",
+                                Dragon: "",
+                                Elizabeth: "",
+                                pet5: nameInput.value,
+                                PinkBear: ""
+                            };
+                            break;
+                        case "PinkBear":
+                            nameObject = {
+                                Pisuke: "",
+                                Bear: "",
+                                Dragon: "",
+                                Elizabeth: "",
+                                pet5: "",
+                                PinkBear: nameInput.value
+                            };
+                            break;
+                    }
+                } else {
+                    switch (e.target.className) {
+                        case "Pisuke":
+                            nameObject.Pisuke = nameInput.value;
+                            break;
+                        case "Bear":
+                            nameObject.Bear = nameInput.value;
+                            break;
+                        case "Dragon":
+                            nameObject.Dragon = nameInput.value;
+                            break;
+                        case "Elizabeth":
+                            nameObject.Elizabeth = nameInput.value;
+                            break;
+                        case "pet5":
+                            nameObject.pet5 = nameInput.value;
+                            break;
+                        case "PinkBear":
+                            nameObject.PinkBear = nameInput.value;
+                            break;
+                    }
                 }
                 chrome.storage.local.set(
                     { Petname: JSON.stringify(nameObject) },
