@@ -10,15 +10,7 @@
   "web_accessible_resources": [
     "popup.html",
     "pet_image/*.png",
-    "pet_image/*.jpg",
-    "fontawesome-free-5.13.0-web/webfonts/*",
-    "fontawesome-free-5.13.0-web/css/*",
-    "fontawesome-free-5.13.0-web/js/*",
-    "fontawesome-free-5.13.0-web/less/*",
-    "fontawesome-free-5.13.0-web/metadata/*",
-    "fontawesome-free-5.13.0-web/scss/*",
-    "fontawesome-free-5.13.0-web/sprites/*",
-    "fontawesome-free-5.13.0-web/svgs/*"
+    "pet_image/*.jpg"
   ],
   "content_scripts": [
     {
