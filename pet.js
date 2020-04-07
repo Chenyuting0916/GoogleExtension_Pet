@@ -173,7 +173,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                 "pet_image/" + this.picIndex + ".png"
             );
         }
-        if (this.y < window.innerHeight - 200) {
+        /*if (this.y < window.innerHeight - 200) {
             this.gravitySpeed += this.gravity;
             this.y += this.gravitySpeed;
             this.petDiv.style.top = this.y + "px";
@@ -181,7 +181,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
         else if (this.y > parseInt(this.petDiv.style.top) && !ifMouseDown) {
             this.gravitySpeed = 0;
             this.y = parseInt(this.petDiv.style.top);
-        }
+        }*/
     };
 
     this.editPetName = function () {
@@ -282,7 +282,10 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             function Bathe(){};
             //come back home
             comeBackHomeBtn.addEventListener("click",ComeBackHome);
-            function ComeBackHome(){};
+            function ComeBackHome(){
+                //petArray.splice(petArray.length,1);
+                //console.log(petArray);
+            };
             //breed
             breedBtn.addEventListener("click",Breed);
             function Breed(){};
