@@ -9,42 +9,43 @@ chrome.runtime.onMessage.addListener(function (request) {
                     nameobj == undefined || nameobj.Pisuke == ""
                         ? "Pisuke"
                         : nameobj.Pisuke;
-                petArray.push(new Pet("1-1", 6, 10, name, petType, nameobj));
+                petArray.push(new Pet("1-1", 6, 6, 2, 10, name, petType, nameobj));
                 break;
             case "Bear":
                 var name =
                     nameobj == undefined || nameobj.Bear == "" ? "Bear" : nameobj.Bear;
-                petArray.push(new Pet("2-1", 3, 10, name, petType, nameobj));
+                petArray.push(new Pet("2-1", 3, 3, 3, 10, name, petType, nameobj));
                 break;
             case "Dragon":
                 var name =
                     nameobj == undefined || nameobj.Dragon == "" ? "Dragon" : nameobj.Dragon;
-                petArray.push(new Pet("3-1", 13, 15, name, petType, nameobj));
+                petArray.push(new Pet("3-1", 13, 3, 2, 15, name, petType, nameobj));
                 break;
             case "Elizabeth":
                 var name =
                     nameobj == undefined || nameobj.Elizabeth == ""
                         ? "Elizabeth"
                         : nameobj.Elizabeth;
-                petArray.push(new Pet("4-1", 3, 10, name, petType, nameobj));
+                petArray.push(new Pet("4-1", 3, 3, 3, 10, name, petType, nameobj));
                 break;
             case "pet5":
                 var name =
                     nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
-                petArray.push(new Pet("5-1", 3, 10, name, petType, nameobj));
+                petArray.push(new Pet("5-1", 3, 3, 3, 10, name, petType, nameobj));
                 break;
             case "PinkBear":
                 var name =
                     nameobj == undefined || nameobj.PinkBear == "" ? "PinkBear" : nameobj.PinkBear;
-                petArray.push(new Pet("6-1", 3, 20, name, petType, nameobj));
+                petArray.push(new Pet("6-1", 3, 3, 3, 20, name, petType, nameobj));
                 break;
         }
     });
 });
 
 var petArray = [];
-function Pet(index, picNum, speed, Petname, petType, petNameObj) {
+function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType, petNameObj) {
     //object properties
+    this.picNum = InitPicNum;
     this.picIndex = index;
     this.picSpeed = speed;
     this.hp = 100;
@@ -160,13 +161,10 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
         }
     };
 
-    this.flag = 0;
-    this.time = 0;
-    this.update = function () {
-        this.time++;
+    this.ChangePic = function () {
         if (this.time > this.picSpeed) {
-            this.time = 0;
-            if (this.flag >= picNum) this.flag = 0;
+            this.picSpeed += this.addPicSpeed;
+            if (this.flag >= this.picNum) this.flag = 0;
             this.flag++;
             this.picIndex = this.picIndex.split('-', 1);
             this.picIndex = this.picIndex + "-" + this.flag.toString();
@@ -174,7 +172,62 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                 "pet_image/" + this.picIndex + ".png"
             );
         }
-        /*if (this.y < window.innerHeight - 200) {
+    }
+
+    this.ResetAction = function () {
+        if (this.picIndex.indexOf("walkright") !== -1) this.picIndex = this.picIndex.substr(9);
+        if (this.picIndex.indexOf("walkleft") !== -1) this.picIndex = this.picIndex.substr(8);
+        if (this.picIndex.indexOf("bath") !== -1) this.picIndex = this.picIndex.substr(4);
+        if (this.picNum != InitPicNum) this.picNum = InitPicNum;
+        this.action = Math.floor(Math.random() * 3); //0~2
+        this.time = 0;
+        this.picSpeed = this.addPicSpeed;
+    }
+
+    this.flag = 0;
+    this.time = 0;
+    this.action = Math.floor(Math.random() * 3); //0~2
+    this.addPicSpeed = this.picSpeed;
+    this.update = function () {
+        this.time++;
+        this.ChangePic();
+        switch (this.action) {
+            case 0: //Idle state
+                break;
+            case 1: //move right
+                this.x += 2;
+                this.petDiv.style.left = this.x + "px";
+                if (this.x >= window.innerWidth - 200) this.x = 0;
+                if (this.picIndex.indexOf("walkright") == -1) {
+                    let newIndex = "walkright" + this.picIndex;
+                    this.picIndex = newIndex;
+                    this.picNum = walkPicNum;
+                }
+                break;
+            case 2: //move left
+                this.x -= 2;
+                this.petDiv.style.left = this.x + "px";
+                if (this.x <= 0) this.x = window.innerWidth - 200;
+                if (this.picIndex.indexOf("walkleft") == -1) {
+                    let newIndex = "walkleft" + this.picIndex;
+                    this.picIndex = newIndex;
+                    this.picNum = walkPicNum;
+                }
+                break;
+            case 3: //bath
+                if (this.picIndex.indexOf("bath") == -1) {
+                    let newIndex = "bath" + this.picIndex;
+                    this.picIndex = newIndex;
+                    this.picNum = bathPicNum;
+                }
+                break;
+        }
+        //reset action
+        if (this.time > 250) this.ResetAction();
+
+
+        /*//add gravity
+        if (this.y < window.innerHeight - 200) {
             this.gravitySpeed += this.gravity;
             this.y += this.gravitySpeed;
             this.petDiv.style.top = this.y + "px";
@@ -266,13 +319,15 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
         let petDiv = document.querySelector("#petNo" + petArray.length);
         //bathe
         $("#" + batheBtn.id).click(function (e) {
-            $('.fa-shower').attr("disabled",true);
+            $('.fa-shower').attr("disabled", true);
             pet = petArray[e.target.id.substr(5)];
-            newIndex = "bath" + pet.picIndex;
-            pet.picIndex = newIndex;
+            // newIndex = "bath" + pet.picIndex;
+            // pet.picIndex = newIndex;
+            pet.ResetAction();
+            pet.action = 3;
             setTimeout(function () {
-                pet.picIndex = newIndex.substr(4);
-                $('.fa-shower').attr("disabled",false);
+                // pet.picIndex = newIndex.substr(4);
+                $('.fa-shower').attr("disabled", false);
             }, 4000);
         });
         //open list
@@ -287,7 +342,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             petFunctionDiv.style = "text-align:center;margin-top: 10px;";
             //feed
             feedingBtn.addEventListener("click", Feeding);
-            function Feeding() {};
+            function Feeding() { };
             //come back home
             comeBackHomeBtn.addEventListener("click", ComeBackHome);
             function ComeBackHome() {
