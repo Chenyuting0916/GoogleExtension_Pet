@@ -77,7 +77,6 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     this.image.id = "imgNo" + petArray.length;
     this.imgDiv.appendChild(this.image);
     this.petDiv.appendChild(this.nameDiv);
-    this.petDiv.appendChild(this.imgDiv);
     this.x = Math.ceil(Math.random() * (window.innerWidth - 200));
     this.y = Math.ceil(Math.random() * (window.innerHeight - 200));
     this.petDiv.style =
@@ -90,15 +89,15 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     this.functionDiv = document.createElement("div");
     this.functionDiv.id = "functionDiv" + petArray.length;
     this.openListBtn = document.createElement("button");
-    this.openListBtn.className = "fas fa-plus-circle";
+    this.openListBtn.className = "fas fa-list-alt";
     this.openListBtn.id = "openList" + petArray.length;
     this.openListBtn.style = "color: #339af0;";
-    this.functionDiv.appendChild(this.openListBtn);
+    this.nameDiv.prepend(this.openListBtn);
     this.closeListBtn = document.createElement("button");
     this.closeListBtn.className = "fas fa-minus-circle";
     this.closeListBtn.style = "display:none; color: #339af0;";
     this.closeListBtn.id = 'closeList' + petArray.length;
-    this.functionDiv.appendChild(this.closeListBtn);
+    this.nameDiv.prepend(this.closeListBtn);
     this.feedingBtn = document.createElement("button");
     this.feedingBtn.className = "fas fa-utensils btn btn-info";
     this.feedingBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
@@ -120,6 +119,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     this.breedBtn.id = "breed" + petArray.length;
     this.functionDiv.appendChild(this.breedBtn);
     this.petDiv.appendChild(this.functionDiv);
+    this.petDiv.appendChild(this.imgDiv);
 
 
     document.getElementsByTagName("body")[0].appendChild(this.petDiv);
@@ -284,7 +284,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             batheBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
             comeBackHomeBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
             breedBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
-            petFunctionDiv.style = "text-align:center;";
+            petFunctionDiv.style = "text-align:center;margin-top: 10px;";
             //feed
             feedingBtn.addEventListener("click", Feeding);
             function Feeding() { };
