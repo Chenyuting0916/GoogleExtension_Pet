@@ -43,7 +43,6 @@ chrome.runtime.onMessage.addListener(function (request) {
 });
 
 var petArray = [];
-var tempBathArray = [];
 function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     //object properties
     this.picIndex = index;
@@ -265,7 +264,6 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
         let breedBtn = document.querySelector("#breed" + petArray.length);
         let petFunctionDiv = document.querySelector("#functionDiv" + petArray.length);
         let petDiv = document.querySelector("#petNo" + petArray.length);
-        let image = document.querySelector("#imgNo" + petArray.length);
         //bathe
         $("#" + batheBtn.id).click(function (e) {
             $('.fa-shower').attr("disabled",true);
