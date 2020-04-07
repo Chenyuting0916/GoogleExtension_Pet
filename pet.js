@@ -53,38 +53,80 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
     this.attack = 5;
     this.friendlinessDegree = 0;
     this.petDiv = document.createElement("div");
-    this.petDiv.id = "imgNo" + petArray.length;
+    this.petDiv.id = "petNo" + petArray.length;
+    //name and edit button
     this.nameDiv = document.createElement("div");
     this.nameDiv.style = "text-align:center;";
     this.nameDiv.id = "nameDiv" + petArray.length;
     this.nameLable = document.createElement("LABLE");
     this.nameLable.id = "petNameLable" + petArray.length;
     this.Content = document.createTextNode(Petname);
-    this.editBtn = document.createElement("i");
-    this.editBtn.className = "fa fa-pen-square";
+    this.editBtn = document.createElement("button");
+    this.editBtn.className = "fas fa-pencil-alt";
     this.editBtn.id = "editBtn" + petArray.length;
     this.nameLable.appendChild(this.Content);
     this.nameDiv.appendChild(this.nameLable);
     this.nameDiv.appendChild(this.editBtn);
+    //image
+    this.imgDiv = document.createElement("div");
+    this.imgDiv.style = "text-align:center;";
     this.image = document.createElement("img");
     this.image.src = chrome.extension.getURL(
         "pet_image/" + this.picIndex + ".png"
     );
     this.image.width = "200";
     this.image.className = "row";
+    this.image.id = "imgNo" + petArray.length;
+    this.imgDiv.appendChild(this.image);
     this.petDiv.appendChild(this.nameDiv);
-    this.petDiv.appendChild(this.image);
+    this.petDiv.appendChild(this.imgDiv);
     this.petDiv.style =
         "position:fixed;left:" +
         Math.ceil(Math.random() * (window.innerWidth - 200)) +
         "px; top:" +
         Math.ceil(Math.random() * (window.innerHeight - 200)) +
         "px;z-index: 99999;";
+    //option
+    this.functionDiv = document.createElement("div");
+    this.functionDiv.id = "functionDiv" + petArray.length;
+    this.openListBtn = document.createElement("button");
+    this.openListBtn.className = "fas fa-plus-circle";
+    this.openListBtn.id = "openList" + petArray.length;
+    this.openListBtn.style = "color: #339af0;";
+    this.functionDiv.appendChild(this.openListBtn);
+    this.closeListBtn = document.createElement("button");
+    this.closeListBtn.className = "fas fa-minus-circle";
+    this.closeListBtn.style = "display:none; color: #339af0;";
+    this.closeListBtn.id = 'closeList' + petArray.length;
+    this.functionDiv.appendChild(this.closeListBtn);
+    this.feedingBtn = document.createElement("button");
+    this.feedingBtn.className = "fas fa-utensils btn btn-info";
+    this.feedingBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+    this.feedingBtn.id = "feeding" + petArray.length;
+    this.functionDiv.appendChild(this.feedingBtn);
+    this.batheBtn = document.createElement("button");
+    this.batheBtn.className = "fas fa-shower btn btn-primary";
+    this.batheBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+    this.batheBtn.id = "bathe" + petArray.length;
+    this.functionDiv.appendChild(this.batheBtn);
+    this.comeBackHomeBtn = document.createElement("button");
+    this.comeBackHomeBtn.className = "fas fa-home btn btn-success";
+    this.comeBackHomeBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+    this.comeBackHomeBtn.id = "comeBackHome" + petArray.length;
+    this.functionDiv.appendChild(this.comeBackHomeBtn);
+    this.breedBtn = document.createElement("button");
+    this.breedBtn.className = "fas fa-heart btn btn-danger";
+    this.breedBtn.style = "display:none; border-radius: 25px;";
+    this.breedBtn.id = "breed" + petArray.length;
+    this.functionDiv.appendChild(this.breedBtn);
+    this.petDiv.appendChild(this.functionDiv);
+
+
     document.getElementsByTagName("body")[0].appendChild(this.petDiv);
 
     //object methods
     this.drag = function () {
-        let dragSouce = document.querySelector("#imgNo" + petArray.length);
+        let dragSouce = document.querySelector("#petNo" + petArray.length);
         let startX = 0;
         let startY = 0;
 
@@ -141,8 +183,8 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             nameInput.setAttribute("value", Petname);
             namediv.appendChild(nameInput);
             nameInput.focus();
-            saveBtn = document.createElement("i");
-            saveBtn.className = "fa fa-check-circle ";
+            saveBtn = document.createElement("button");
+            saveBtn.className = "fas fa-check";
             namediv.appendChild(saveBtn);
 
             saveBtn.addEventListener("click", displayNameLabel);
@@ -156,7 +198,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                     nameLabel.style = "display:inline;";
                     //nameLabel.innerHTML = nameInput.value;
                     //Petname = nameInput.value;
-                    
+
                     var nameObject = newpetNameObj;
                     if (nameObject == undefined) {
                         nameObject = {
@@ -196,16 +238,76 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                         }
                     );
                 });
-                
+
             }
         }
     };
+
+    this.displayFunction = function () {
+        let openListBtn = document.querySelector("#openList" + petArray.length);
+        let closeListBtn = document.querySelector("#closeList" + petArray.length);
+        let feedingBtn = document.querySelector("#feeding" + petArray.length);
+        let batheBtn = document.querySelector("#bathe" + petArray.length);
+        let comeBackHomeBtn = document.querySelector("#comeBackHome" + petArray.length);
+        let breedBtn = document.querySelector("#breed" + petArray.length);
+        let petFunctionDiv = document.querySelector("#functionDiv" + petArray.length);
+        //open list
+        openListBtn.addEventListener("click", OpenFunctionList);
+        function OpenFunctionList() {
+            openListBtn.style = "display:none;";
+            closeListBtn.style = "display:inline; color: #339af0;";
+            feedingBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
+            batheBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
+            comeBackHomeBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
+            breedBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
+            petFunctionDiv.style= "text-align:center;";
+            //feed
+            feedingBtn.addEventListener("click",Feeding);
+            function Feeding(){};
+            //bathe
+            batheBtn.addEventListener("click",Bathe);
+            function Bathe(){};
+            //come back home
+            comeBackHomeBtn.addEventListener("click",ComeBackHome);
+            function ComeBackHome(){};
+            //breed
+            breedBtn.addEventListener("click",Breed);
+            function Breed(){};
+            //close list
+            closeListBtn.addEventListener("click", CloseFunctionList);
+            function CloseFunctionList(e) {
+                openListBtn.style = "display:inline; color: #339af0;";
+                (e.target).style = "display:none;";
+                feedingBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+                batheBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+                comeBackHomeBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+                breedBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+                petFunctionDiv.style = "";
+            };
+        };
+    };
+
+
     document.getElementsByTagName("head")[0].insertAdjacentHTML(
         "beforeend",
-        "<link type=\"text/css\" rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\" />");
+        "<link type=\"text/css\" rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css\" />");
+    /*document.getElementsByTagName("head")[0].insertAdjacentHTML(
+        "beforeend",
+        "<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\" integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\"/>");
+    document.getElementsByTagName("body")[0].insertAdjacentHTML(
+        "beforeend",
+        "<script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>");
+    document.getElementsByTagName("body")[0].insertAdjacentHTML(
+        "beforeend",
+        "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\" integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\" crossorigin=\"anonymous\"></script>");
+    document.getElementsByTagName("body")[0].insertAdjacentHTML(
+        "beforeend",
+        "<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\" integrity=\"sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM\" crossorigin=\"anonymous\"></script>");
+    */
     //object action
     this.drag();
     this.editPetName();
+    this.displayFunction();
 }
 
 animate = function () {
