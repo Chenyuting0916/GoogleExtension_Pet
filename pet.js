@@ -287,7 +287,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             petFunctionDiv.style = "text-align:center;margin-top: 10px;";
             //feed
             feedingBtn.addEventListener("click", Feeding);
-            function Feeding() { };
+            function Feeding() {};
             //come back home
             comeBackHomeBtn.addEventListener("click", ComeBackHome);
             function ComeBackHome() {
