@@ -210,8 +210,6 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
                     nameInput.style = "display:none;";
                     btnEdit.style = "display:inline ;";
                     nameLabel.style = "display:inline;";
-                    //nameLabel.innerHTML = nameInput.value;
-                    //Petname = nameInput.value;
 
                     var nameObject = newpetNameObj;
                     if (nameObject == undefined) {
@@ -264,6 +262,7 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
         let comeBackHomeBtn = document.querySelector("#comeBackHome" + petArray.length);
         let breedBtn = document.querySelector("#breed" + petArray.length);
         let petFunctionDiv = document.querySelector("#functionDiv" + petArray.length);
+        let petDiv = document.querySelector("#petNo" + petArray.length);
         //open list
         openListBtn.addEventListener("click", OpenFunctionList);
         function OpenFunctionList() {
@@ -283,12 +282,12 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
             //come back home
             comeBackHomeBtn.addEventListener("click",ComeBackHome);
             function ComeBackHome(){
-                //petArray.splice(petArray.length,1);
-                //console.log(petArray);
+                $("#" + petDiv.id ).hide();
             };
             //breed
             breedBtn.addEventListener("click",Breed);
-            function Breed(){};
+            function Breed(){
+            };
             //close list
             closeListBtn.addEventListener("click", CloseFunctionList);
             function CloseFunctionList(e) {
@@ -328,8 +327,8 @@ function Pet(index, picNum, speed, Petname, petType, petNameObj) {
 
 animate = function () {
     requestAnimationFrame(animate);
-    for (var i = 0; i < petArray.length; i++) {
-        petArray[i].update();
-    }
+    petArray.forEach(pet=>  {
+        pet.update();
+    });
 };
 animate();
