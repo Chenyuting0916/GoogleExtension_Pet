@@ -134,7 +134,7 @@ chrome.runtime.onMessage.addListener(function (request) {
                             expObj == undefined || expObj.PinkBear == ""
                                 ? 0
                                 : expObj.PinkBear;
-                        petArray.push(new Pet("6-1", 3, 3, 3, 0, 20, name, level, exp, petType));
+                        petArray.push(new Pet("6-1", 3, 3, 3, 4, 20, name, level, exp, petType));
                         break;
                 }
                 chrome.storage.local.set({ petArray }, function () {
