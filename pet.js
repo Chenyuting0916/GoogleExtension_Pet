@@ -1,3 +1,13 @@
+//create old pet
+chrome.storage.local.get(null, function (obj) {
+    console.log(obj.petArray);
+    if(obj.petArray != null){
+        for (var i = 0; i < obj.petArray.length; i++) {
+            new Pet(obj.petArray[i].picIndex, obj.petArray[i].picNum, obj.petArray[i].bathPicNum, obj.petArray[i].walkPicNum, obj.petArray[i].picSpeed, obj.petArray[i].petName, obj.petArray[i].petType)
+        }
+    }
+});
+
 //create new pet
 chrome.runtime.onMessage.addListener(function (request) {
     chrome.storage.local.get(["Petname"], function (result) {
@@ -39,12 +49,19 @@ chrome.runtime.onMessage.addListener(function (request) {
                 petArray.push(new Pet("6-1", 3, 3, 3, 20, name, petType));
                 break;
         }
+        chrome.storage.local.set({ petArray }, function () {
+            console.log(petArray);
+        });
     });
 });
 
 var petArray = [];
 function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType) {
     //object properties
+    this.petType = petType;
+    this.petName = Petname;
+    this.walkPicNum = walkPicNum;
+    this.bathPicNum = bathPicNum;
     this.picNum = InitPicNum;
     this.picIndex = index;
     this.picSpeed = speed;
