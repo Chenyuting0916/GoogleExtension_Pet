@@ -19,34 +19,34 @@ chrome.runtime.onMessage.addListener(function (request) {
                     nameobj == undefined || nameobj.Pisuke == ""
                         ? "Pisuke"
                         : nameobj.Pisuke;
-                petArray.push(new Pet("1-1", 6, 6, 2, 10, name, petType));
+                petArray.push(new Pet("1-1", 6, 6, 2, 6, 10, name, petType));
                 break;
             case "Bear":
                 var name =
                     nameobj == undefined || nameobj.Bear == "" ? "Bear" : nameobj.Bear;
-                petArray.push(new Pet("2-1", 3, 3, 3, 10, name, petType));
+                petArray.push(new Pet("2-1", 3, 3, 3, 3, 10, name, petType));
                 break;
             case "Dragon":
                 var name =
                     nameobj == undefined || nameobj.Dragon == "" ? "Dragon" : nameobj.Dragon;
-                petArray.push(new Pet("3-1", 13, 3, 2, 15, name, petType));
+                petArray.push(new Pet("3-1", 13, 3, 2, 0, 15, name, petType));
                 break;
             case "Elizabeth":
                 var name =
                     nameobj == undefined || nameobj.Elizabeth == ""
                         ? "Elizabeth"
                         : nameobj.Elizabeth;
-                petArray.push(new Pet("4-1", 3, 3, 3, 10, name, petType));
+                petArray.push(new Pet("4-1", 3, 3, 3, 3, 10, name, petType));
                 break;
             case "pet5":
                 var name =
                     nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
-                petArray.push(new Pet("5-1", 3, 3, 3, 10, name, petType));
+                petArray.push(new Pet("5-1", 3, 3, 3, 0, 10, name, petType));
                 break;
             case "PinkBear":
                 var name =
                     nameobj == undefined || nameobj.PinkBear == "" ? "PinkBear" : nameobj.PinkBear;
-                petArray.push(new Pet("6-1", 3, 3, 3, 20, name, petType));
+                petArray.push(new Pet("6-1", 3, 3, 3, 0, 20, name, petType));
                 break;
         }
         chrome.storage.local.set({ petArray }, function () {
@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener(function (request) {
 });
 
 var petArray = [];
-function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType) {
+function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petname, petType) {
     //object properties
     this.petType = petType;
     this.petName = Petname;
@@ -116,11 +116,11 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType)
     this.closeListBtn.style = "display:none; color: #339af0;";
     this.closeListBtn.id = 'closeList' + petArray.length;
     this.nameDiv.prepend(this.closeListBtn);
-    this.feedingBtn = document.createElement("button");
-    this.feedingBtn.className = "fas fa-utensils btn btn-info";
-    this.feedingBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
-    this.feedingBtn.id = "feeding" + petArray.length;
-    this.functionDiv.appendChild(this.feedingBtn);
+    this.eatBtn = document.createElement("button");
+    this.eatBtn.className = "fas fa-utensils btn btn-info";
+    this.eatBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+    this.eatBtn.id = "eat" + petArray.length;
+    this.functionDiv.appendChild(this.eatBtn);
     this.batheBtn = document.createElement("button");
     this.batheBtn.className = "fas fa-shower btn btn-primary";
     this.batheBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
@@ -131,11 +131,6 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType)
     this.comeBackHomeBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
     this.comeBackHomeBtn.id = "comeBackHome" + petArray.length;
     this.functionDiv.appendChild(this.comeBackHomeBtn);
-    this.breedBtn = document.createElement("button");
-    this.breedBtn.className = "fas fa-heart btn btn-danger";
-    this.breedBtn.style = "display:none; border-radius: 25px;";
-    this.breedBtn.id = "breed" + petArray.length;
-    this.functionDiv.appendChild(this.breedBtn);
     this.petDiv.appendChild(this.functionDiv);
     this.petDiv.appendChild(this.imgDiv);
 
@@ -195,6 +190,7 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType)
         if (this.picIndex.indexOf("walkright") !== -1) this.picIndex = this.picIndex.substr(9);
         if (this.picIndex.indexOf("walkleft") !== -1) this.picIndex = this.picIndex.substr(8);
         if (this.picIndex.indexOf("bath") !== -1) this.picIndex = this.picIndex.substr(4);
+        if (this.picIndex.indexOf("eat") !== -1) this.picIndex = this.picIndex.substr(3);
         if (this.picNum != InitPicNum) this.picNum = InitPicNum;
         this.action = Math.floor(Math.random() * 3); //0~2
         this.time = 0;
@@ -236,6 +232,13 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType)
                     let newIndex = "bath" + this.picIndex;
                     this.picIndex = newIndex;
                     this.picNum = bathPicNum;
+                }
+                break;
+            case 4: //eat
+                if (this.picIndex.indexOf("eat") == -1) {
+                    let newIndex = "eat" + this.picIndex;
+                    this.picIndex = newIndex;
+                    this.picNum = eatPicNum;
                 }
                 break;
         }
@@ -328,22 +331,28 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType)
     this.displayFunction = function () {
         let openListBtn = document.querySelector("#openList" + petArray.length);
         let closeListBtn = document.querySelector("#closeList" + petArray.length);
-        let feedingBtn = document.querySelector("#feeding" + petArray.length);
+        let eatBtn = document.querySelector("#eat" + petArray.length);
         let batheBtn = document.querySelector("#bathe" + petArray.length);
         let comeBackHomeBtn = document.querySelector("#comeBackHome" + petArray.length);
-        let breedBtn = document.querySelector("#breed" + petArray.length);
         let petFunctionDiv = document.querySelector("#functionDiv" + petArray.length);
         let petDiv = document.querySelector("#petNo" + petArray.length);
+        //eat
+        $("#" + eatBtn.id).click(function (e) {
+            $('.fa-utensils').attr("disabled", true);
+            pet = petArray[e.target.id.substr(3)];
+            pet.ResetAction();
+            pet.action = 4;
+            setTimeout(function () {
+                $('.fa-utensils').attr("disabled", false);
+            }, 4000);
+        });
         //bathe
         $("#" + batheBtn.id).click(function (e) {
             $('.fa-shower').attr("disabled", true);
             pet = petArray[e.target.id.substr(5)];
-            // newIndex = "bath" + pet.picIndex;
-            // pet.picIndex = newIndex;
             pet.ResetAction();
             pet.action = 3;
             setTimeout(function () {
-                // pet.picIndex = newIndex.substr(4);
                 $('.fa-shower').attr("disabled", false);
             }, 4000);
         });
@@ -352,32 +361,23 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType)
         function OpenFunctionList() {
             openListBtn.style = "display:none;";
             closeListBtn.style = "display:inline; color: #339af0;";
-            feedingBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
+            eatBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
             batheBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
             comeBackHomeBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
-            breedBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
             petFunctionDiv.style = "text-align:center;margin-top: 10px;";
-            //feed
-            feedingBtn.addEventListener("click", Feeding);
-            function Feeding() { };
             //come back home
             comeBackHomeBtn.addEventListener("click", ComeBackHome);
             function ComeBackHome() {
                 $("#" + petDiv.id).hide();
-            };
-            //breed
-            breedBtn.addEventListener("click", Breed);
-            function Breed() {
             };
             //close list
             closeListBtn.addEventListener("click", CloseFunctionList);
             function CloseFunctionList(e) {
                 openListBtn.style = "display:inline; color: #339af0;";
                 (e.target).style = "display:none;";
-                feedingBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
+                eatBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
                 batheBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
                 comeBackHomeBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
-                breedBtn.style = "display:none; margin-right: 5px;border-radius: 25px;";
                 petFunctionDiv.style = "";
             };
         };
