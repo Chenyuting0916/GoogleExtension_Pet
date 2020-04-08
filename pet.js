@@ -1,53 +1,170 @@
+// chrome.storage.local.clear();
+var petArray = [];
+//create old pet
+CreateOldPet = function () {
+  chrome.storage.local.get(null, function (obj) {
+    if (obj.petArray != null) {
+      for (var i = 0; i < obj.petArray.length; i++) {
+        petArray.push(
+          new Pet(
+            obj.petArray[i].picIndex,
+            obj.petArray[i].picNum,
+            obj.petArray[i].bathPicNum,
+            obj.petArray[i].walkPicNum,
+            obj.petArray[i].eatPicNum,
+            obj.petArray[i].picSpeed,
+            obj.petArray[i].petName,
+            JSON.parse(obj.petLevel)[obj.petArray[i].petType],
+            JSON.parse(obj.petExp)[obj.petArray[i].petType],
+            obj.petArray[i].petType
+          )
+        );
+      }
+    }
+  });
+};
+CreateOldPet();
+
 //create new pet
 chrome.runtime.onMessage.addListener(function (request) {
   chrome.storage.local.get(["Petname"], function (result) {
-    let petType = request.petName;
-    let nameobj =
-      result.Petname == undefined ? undefined : JSON.parse(result.Petname);
-    switch (petType) {
-      case "Pisuke":
-        var name =
-          nameobj == undefined || nameobj.Pisuke == ""
-            ? "Pisuke"
-            : nameobj.Pisuke;
-        petArray.push(new Pet("1-1", 6, 6, 2, 6, 10, name, petType));
-        break;
-      case "Bear":
-        var name =
-          nameobj == undefined || nameobj.Bear == "" ? "Bear" : nameobj.Bear;
-        petArray.push(new Pet("2-1", 3, 3, 3, 3, 10, name, petType));
-        break;
-      case "Dragon":
-        var name =
-          nameobj == undefined || nameobj.Dragon == ""
-            ? "Dragon"
-            : nameobj.Dragon;
-        petArray.push(new Pet("3-1", 13, 3, 2, 0, 15, name, petType));
-        break;
-      case "Elizabeth":
-        var name =
-          nameobj == undefined || nameobj.Elizabeth == ""
-            ? "Elizabeth"
-            : nameobj.Elizabeth;
-        petArray.push(new Pet("4-1", 3, 3, 3, 3, 10, name, petType));
-        break;
-      case "pet5":
-        var name =
-          nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
-        petArray.push(new Pet("5-1", 3, 3, 3, 0, 10, name, petType));
-        break;
-      case "PinkBear":
-        var name =
-          nameobj == undefined || nameobj.PinkBear == ""
-            ? "PinkBear"
-            : nameobj.PinkBear;
-        petArray.push(new Pet("6-1", 3, 3, 3, 0, 20, name, petType));
-        break;
-    }
+    chrome.storage.local.get(["petLevel"], function (levelresult) {
+      chrome.storage.local.get(["petExp"], function (expresult) {
+        let petType = request.petName;
+        let nameobj =
+          result.Petname == undefined ? undefined : JSON.parse(result.Petname);
+        let levelObj =
+          levelresult.petLevel == undefined
+            ? undefined
+            : JSON.parse(levelresult.petLevel);
+        let expObj =
+          expresult.petExp == undefined
+            ? undefined
+            : JSON.parse(expresult.petExp);
+        if (levelObj == undefined) {
+          levelObj = {
+            Pisuke: 1,
+            Bear: 1,
+            Dragon: 1,
+            Elizabeth: 1,
+            pet5: 1,
+            PinkBear: 1,
+          };
+          chrome.storage.local.set(
+            { petLevel: JSON.stringify(levelObj) },
+            function () {}
+          );
+        }
+        if (expObj == undefined) {
+          expObj = {
+            Pisuke: 0,
+            Bear: 0,
+            Dragon: 0,
+            Elizabeth: 0,
+            pet5: 0,
+            PinkBear: 0,
+          };
+        }
+        chrome.storage.local.set(
+          { petExp: JSON.stringify(expObj) },
+          function () {}
+        );
+        switch (petType) {
+          case "Pisuke":
+            var name =
+              nameobj == undefined || nameobj.Pisuke == ""
+                ? "Pisuke"
+                : nameobj.Pisuke;
+            var level =
+              levelObj == undefined || levelObj.Pisuke == ""
+                ? 1
+                : levelObj.Pisuke;
+            var exp =
+              expObj == undefined || expObj.Pisuke == "" ? 0 : expObj.Pisuke;
+            petArray.push(
+              new Pet("1-1", 6, 6, 2, 6, 10, name, level, exp, petType)
+            );
+            break;
+          case "Bear":
+            var name =
+              nameobj == undefined || nameobj.Bear == ""
+                ? "Bear"
+                : nameobj.Bear;
+            var level =
+              levelObj == undefined || levelObj.Bear == "" ? 1 : levelObj.Bear;
+            var exp =
+              expObj == undefined || expObj.Bear == "" ? 0 : expObj.Bear;
+            petArray.push(
+              new Pet("2-1", 3, 3, 3, 3, 10, name, level, exp, petType)
+            );
+            break;
+          case "Dragon":
+            var name =
+              nameobj == undefined || nameobj.Dragon == ""
+                ? "Dragon"
+                : nameobj.Dragon;
+            var level =
+              levelObj == undefined || levelObj.Dragon == ""
+                ? 1
+                : levelObj.Dragon;
+            var exp =
+              expObj == undefined || expObj.Dragon == "" ? 0 : expObj.Dragon;
+            petArray.push(
+              new Pet("3-1", 13, 3, 2, 0, 15, name, level, exp, petType)
+            );
+            break;
+          case "Elizabeth":
+            var name =
+              nameobj == undefined || nameobj.Elizabeth == ""
+                ? "Elizabeth"
+                : nameobj.Elizabeth;
+            var level =
+              levelObj == undefined || levelObj.Elizabeth == ""
+                ? 1
+                : levelObj.Elizabeth;
+            var exp =
+              expObj == undefined || expObj.Elizabeth == ""
+                ? 0
+                : expObj.Elizabeth;
+            petArray.push(
+              new Pet("4-1", 3, 3, 3, 3, 10, name, level, exp, petType)
+            );
+            break;
+          case "pet5":
+            var name =
+              nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
+            var level =
+              levelObj == undefined || levelObj.pet5 == "" ? 1 : levelObj.pet5;
+            var exp =
+              expObj == undefined || expObj.pet5 == "" ? 0 : expObj.pet5;
+            petArray.push(
+              new Pet("5-1", 3, 3, 3, 0, 10, name, level, exp, petType)
+            );
+            break;
+          case "PinkBear":
+            var name =
+              nameobj == undefined || nameobj.PinkBear == ""
+                ? "PinkBear"
+                : nameobj.PinkBear;
+            var level =
+              levelObj == undefined || levelObj.PinkBear == ""
+                ? 1
+                : levelObj.PinkBear;
+            var exp =
+              expObj == undefined || expObj.PinkBear == ""
+                ? 0
+                : expObj.PinkBear;
+            petArray.push(
+              new Pet("6-1", 3, 3, 3, 4, 20, name, level, exp, petType)
+            );
+            break;
+        }
+        chrome.storage.local.set({ petArray }, function () {});
+      });
+    });
   });
 });
 
-var petArray = [];
 var eatFrequency = [];
 var isCount = true;
 function Pet(
@@ -58,17 +175,42 @@ function Pet(
   eatPicNum,
   speed,
   Petname,
+  petLevel,
+  petExp,
   petType
 ) {
   //object properties
+  this.petType = petType;
+  this.petName = Petname;
+  this.eatPicNum = eatPicNum;
+  this.walkPicNum = walkPicNum;
+  this.bathPicNum = bathPicNum;
   this.picNum = InitPicNum;
   this.picIndex = index;
   this.picSpeed = speed;
   this.hp = 100;
+  this.level = petLevel;
+  this.exp = petExp;
   this.attack = 5;
   this.friendlinessDegree = 0;
   this.petDiv = document.createElement("div");
   this.petDiv.id = "petNo" + petArray.length;
+  //Level div
+  this.levelDiv = document.createElement("div");
+  this.levelDiv.style = "text-align:center;font-size:25px;";
+  this.levelDiv.id = "levelDiv" + petArray.length;
+  this.levelLable = document.createElement("B");
+  this.levelLable.id = "petlevelLable" + petArray.length;
+  this.levelContent = document.createTextNode("Lv. " + this.level);
+  this.levelLable.appendChild(this.levelContent);
+  //Exp div
+  this.expDiv = document.createElement("div");
+  this.expDiv.style = "text-align:center;font-size:20px;";
+  this.expDiv.id = "expDiv" + petArray.length;
+  this.expLable = document.createElement("B");
+  this.expLable.id = "petexpLable" + petArray.length;
+  this.expContent = document.createTextNode("Exp: " + this.exp);
+  this.expLable.appendChild(this.expContent);
   //name and edit button
   this.nameDiv = document.createElement("div");
   this.nameDiv.style = "text-align:center;";
@@ -93,7 +235,12 @@ function Pet(
   this.image.className = "row";
   this.image.id = "imgNo" + petArray.length;
   this.imgDiv.appendChild(this.image);
+  this.levelDiv.appendChild(this.levelLable);
+  this.expDiv.appendChild(this.expLable);
+  this.petDiv.appendChild(this.levelDiv);
+  this.petDiv.appendChild(this.expDiv);
   this.petDiv.appendChild(this.nameDiv);
+  this.petDiv.appendChild(this.imgDiv);
   this.x = Math.ceil(Math.random() * (window.innerWidth - 200));
   this.y = Math.ceil(Math.random() * (window.innerHeight - 200));
   this.petDiv.style =
@@ -133,6 +280,8 @@ function Pet(
   this.functionDiv.appendChild(this.comeBackHomeBtn);
   this.petDiv.appendChild(this.functionDiv);
   this.petDiv.appendChild(this.imgDiv);
+
+  document.getElementsByTagName("body")[0].appendChild(this.petDiv);
 
   document.getElementsByTagName("body")[0].appendChild(this.petDiv);
 
@@ -344,6 +493,10 @@ function Pet(
       "#functionDiv" + petArray.length
     );
     let petDiv = document.querySelector("#petNo" + petArray.length);
+    let levelLableDom = document.querySelector(
+      "#petlevelLable" + petArray.length
+    );
+    let expLableDom = document.querySelector("#petexpLable" + petArray.length);
     //eat
     $("#" + eatBtn.id).click(function (e) {
       isCount = true;
@@ -368,11 +521,13 @@ function Pet(
               eatFrequency[i]["petNo" + e.target.id.substr(3).toString()] % 3 ==
               0
             ) {
-              console.log(pet.picIndex);
               var imgSrc = chrome.extension.getURL(
-                "pet_image/" + "shit" + pet.picIndex.substring(0,1).toString() + ".png"
+                "pet_image/" +
+                  "shit" +
+                  pet.picIndex.substring(0, 1).toString() +
+                  ".png"
               );
-              $("#petNo"+ e.target.id.substr(3).toString()).append(
+              $("#petNo" + e.target.id.substr(3).toString()).append(
                 "<img src=" + imgSrc + " style='width:30px' />"
               );
             }
@@ -385,9 +540,6 @@ function Pet(
           eatFrequency.push(object);
         }
       }
-
-      console.log(eatFrequency);
-
       setTimeout(function () {
         $(".fa-utensils").attr("disabled", false);
       }, 4000);
@@ -400,8 +552,10 @@ function Pet(
       pet.action = 3;
       setTimeout(function () {
         $(".fa-shower").attr("disabled", false);
+        expUp(levelLableDom, expLableDom, petType, 30);
       }, 4000);
     });
+
     //open list
     openListBtn.addEventListener("click", OpenFunctionList);
     function OpenFunctionList() {
@@ -412,10 +566,16 @@ function Pet(
       comeBackHomeBtn.style =
         "display:inline; margin-right: 5px;border-radius: 25px;";
       petFunctionDiv.style = "text-align:center;margin-top: 10px;";
+
       //come back home
       comeBackHomeBtn.addEventListener("click", ComeBackHome);
       function ComeBackHome() {
-        $("#" + petDiv.id).hide();
+        chrome.storage.local.get(null, function (obj) {
+          obj.petArray.splice(petDiv.id.substr(5), 1);
+        });
+        petArray.splice(petDiv.id.substr(5), 1);
+        chrome.storage.local.set({ petArray }, function () {});
+        $("#" + petDiv.id).remove();
       }
       //close list
       closeListBtn.addEventListener("click", CloseFunctionList);
@@ -453,8 +613,203 @@ function Pet(
   //object action
   this.drag();
   this.editPetName();
-  this.displayFunction();
+  this.displayFunction(petType);
 }
+
+getLevel = function (petType) {
+  chrome.storage.local.get(["petLevel"], function (result) {
+    var allPetLevelObj =
+      result.petLevel == undefined || result.petLevel == null
+        ? undefined
+        : JSON.parse(result.petLevel);
+    if (allPetLevelObj == undefined) {
+      allPetLevelObj = {
+        Pisuke: 1,
+        Bear: 1,
+        Dragon: 1,
+        Elizabeth: 1,
+        pet5: 1,
+        PinkBear: 1,
+      };
+    }
+    switch (petType) {
+      case "Pisuke":
+        return allPetLevelObj.Pisuke;
+        break;
+      case "Bear":
+        return allPetLevelObj.Bear;
+        break;
+      case "Dragon":
+        return allPetLevelObj.Dragon;
+        break;
+      case "Elizabeth":
+        return allPetLevelObj.Elizabeth;
+        break;
+      case "pet5":
+        return allPetLevelObj.pet5;
+        break;
+      case "PinkBear":
+        return allPetLevelObj.PinkBear;
+        break;
+    }
+  });
+};
+levelUp = function (levelDom, expDom, petType, level) {
+  chrome.storage.local.get(["petLevel"], function (result) {
+    var levelObj =
+      result.petLevel == undefined || result.petLevel == null
+        ? undefined
+        : JSON.parse(result.petLevel);
+    if (levelObj == undefined) {
+      levelObj = {
+        Pisuke: 1,
+        Bear: 1,
+        Dragon: 1,
+        Elizabeth: 1,
+        pet5: 1,
+        PinkBear: 1,
+      };
+    }
+    switch (petType) {
+      case "Pisuke":
+        levelObj.Pisuke = level;
+        break;
+      case "Bear":
+        levelObj.Bear = level;
+        break;
+      case "Dragon":
+        levelObj.Dragon = level;
+        break;
+      case "Elizabeth":
+        levelObj.Elizabeth = level;
+        break;
+      case "pet5":
+        levelObj.pet5 = level;
+        break;
+      case "PinkBear":
+        levelObj.PinkBear = level;
+        break;
+    }
+    chrome.storage.local.set(
+      { petLevel: JSON.stringify(levelObj) },
+      function () {
+        //升級顯示
+        levelDom.innerHTML = "LV. " + levelObj[petType];
+        //經驗歸零 歸零顯示
+        chrome.storage.local.get(["petExp"], function (result) {
+          var allPetExpObj =
+            result.petExp == undefined || result.petExp == null
+              ? undefined
+              : JSON.parse(result.petExp);
+          if (allPetExpObj == undefined) {
+            allPetExpObj = {
+              Pisuke: 0,
+              Bear: 0,
+              Dragon: 0,
+              Elizabeth: 0,
+              pet5: 0,
+              PinkBear: 0,
+            };
+          }
+          allPetExpObj[petType] = 0;
+          chrome.storage.local.set(
+            { petExp: JSON.stringify(allPetExpObj) },
+            function () {
+              expDom.innerHTML = "Exp: 0";
+            }
+          );
+        });
+      }
+    );
+  });
+};
+isLevelUp = function (levelDom, expDom, petType) {
+  chrome.storage.local.get(["petExp"], function (Expresult) {
+    chrome.storage.local.get(["petLevel"], function (Levelresult) {
+      var allPetExpObj =
+        Expresult.petExp == undefined || Expresult.petExp == null
+          ? undefined
+          : JSON.parse(Expresult.petExp);
+      var allPetLevelObj =
+        Levelresult.petLevel == undefined || Levelresult.petLevel == null
+          ? undefined
+          : JSON.parse(Levelresult.petLevel);
+      var thisPetExp = allPetExpObj[petType];
+      var thisPetLevel = allPetLevelObj[petType];
+      var thisLevelNeedExp = thisPetLevel * 3 + 10;
+      if (thisPetExp >= thisLevelNeedExp) {
+        thisPetLevel = thisPetLevel + 1;
+        levelUp(levelDom, expDom, petType, thisPetLevel);
+      }
+    });
+  });
+};
+getExp = function (petType) {
+  chrome.storage.local.get(["petExp"], function (result) {
+    var allPetExpObj =
+      result.petExp == undefined || result.petExp == null
+        ? undefined
+        : JSON.parse(result.petExp);
+    if (allPetExpObj == undefined) {
+      allPetExpObj = {
+        Pisuke: 0,
+        Bear: 0,
+        Dragon: 0,
+        Elizabeth: 0,
+        pet5: 0,
+        PinkBear: 0,
+      };
+    }
+    switch (petType) {
+      case "Pisuke":
+        return allPetExpObj.Pisuke;
+        break;
+      case "Bear":
+        return allPetExpObj.Bear;
+        break;
+      case "Dragon":
+        return allPetExpObj.Dragon;
+        break;
+      case "Elizabeth":
+        return allPetExpObj.Elizabeth;
+        break;
+      case "pet5":
+        return allPetExpObj.pet5;
+        break;
+      case "PinkBear":
+        return allPetExpObj.PinkBear;
+        break;
+    }
+  });
+};
+expUp = function (levelDom, expDom, petType, upExp) {
+  chrome.storage.local.get(["petExp"], function (result) {
+    var allPetExpObj =
+      result.petExp == undefined || result.petExp == null
+        ? undefined
+        : JSON.parse(result.petExp);
+    if (allPetExpObj == undefined) {
+      allPetExpObj = {
+        Pisuke: 0,
+        Bear: 0,
+        Dragon: 0,
+        Elizabeth: 0,
+        pet5: 0,
+        PinkBear: 0,
+      };
+    }
+    var thisPetExp = allPetExpObj[petType];
+    allPetExpObj[petType] = thisPetExp + upExp;
+    chrome.storage.local.set(
+      { petExp: JSON.stringify(allPetExpObj) },
+      function () {
+        //改成經驗值的DOM
+        expDom.innerHTML = "Exp: " + allPetExpObj[petType];
+        isLevelUp(levelDom, expDom, petType);
+      }
+    );
+  });
+};
 
 animate = function () {
   requestAnimationFrame(animate);
