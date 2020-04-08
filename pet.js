@@ -52,7 +52,7 @@ chrome.runtime.onMessage.addListener(function (request) {
           };
           chrome.storage.local.set(
             { petLevel: JSON.stringify(levelObj) },
-            function () {}
+            function () { }
           );
         }
         if (expObj == undefined) {
@@ -67,7 +67,7 @@ chrome.runtime.onMessage.addListener(function (request) {
         }
         chrome.storage.local.set(
           { petExp: JSON.stringify(expObj) },
-          function () {}
+          function () { }
         );
         switch (petType) {
           case "Pisuke":
@@ -159,7 +159,8 @@ chrome.runtime.onMessage.addListener(function (request) {
             );
             break;
         }
-        chrome.storage.local.set({ petArray }, function () {});
+
+        chrome.storage.local.set({ petArray }, function () { });
       });
     });
   });
@@ -180,6 +181,7 @@ function Pet(
   petType
 ) {
   //object properties
+  this.InitPicNum = InitPicNum;
   this.petType = petType;
   this.petName = Petname;
   this.eatPicNum = eatPicNum;
@@ -298,6 +300,8 @@ function Pet(
     dragSouce.addEventListener("mousedown", dragStart);
 
     function dragStart(e) {
+      if (petArray[e.target.id.substr(5)] != undefined)
+        pp = petArray[e.target.id.substr(5)];
       e.preventDefault();
       //記錄點擊相對被點擊物件的座標
       startX = e.clientX - dragSouce.offsetLeft;
@@ -306,12 +310,18 @@ function Pet(
       document.addEventListener("mouseup", stop);
       ifMouseDown = true;
     }
+
     function move(e) {
       //計算出拖曳物件最左上角座標
       x = e.clientX - startX;
       y = e.clientY - startY;
       dragSouce.style.left = x + "px";
       dragSouce.style.top = y + "px";
+      console.log(pp);
+      pp.ResetAction();
+      pp.action = 0;
+      pp.x = x;
+      pp.y = y;
     }
 
     function stop() {
@@ -343,7 +353,7 @@ function Pet(
       this.picIndex = this.picIndex.substr(4);
     if (this.picIndex.indexOf("eat") !== -1)
       this.picIndex = this.picIndex.substr(3);
-    if (this.picNum != InitPicNum) this.picNum = InitPicNum;
+    if (this.picNum != InitPicNum) this.picNum = this.InitPicNum;
     this.action = Math.floor(Math.random() * 3); //0~2
     this.time = 0;
     this.picSpeed = this.addPicSpeed;
@@ -523,9 +533,9 @@ function Pet(
             ) {
               var imgSrc = chrome.extension.getURL(
                 "pet_image/" +
-                  "shit" +
-                  pet.picIndex.substring(0, 1).toString() +
-                  ".png"
+                "shit" +
+                pet.picIndex.substring(0, 1).toString() +
+                ".png"
               );
               $("#petNo" + e.target.id.substr(3).toString()).append(
                 "<img src=" + imgSrc + " style='width:30px' />"
@@ -575,7 +585,7 @@ function Pet(
           obj.petArray.splice(petDiv.id.substr(5), 1);
         });
         petArray.splice(petDiv.id.substr(5), 1);
-        chrome.storage.local.set({ petArray }, function () {});
+        chrome.storage.local.set({ petArray }, function () { });
         $("#" + petDiv.id).remove();
       }
       //close list
@@ -615,6 +625,7 @@ function Pet(
   this.drag();
   this.editPetName();
   this.displayFunction(petType);
+  //this.ResetAction();
 }
 
 getLevel = function (petType) {
