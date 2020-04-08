@@ -9,41 +9,41 @@ chrome.runtime.onMessage.addListener(function (request) {
                     nameobj == undefined || nameobj.Pisuke == ""
                         ? "Pisuke"
                         : nameobj.Pisuke;
-                petArray.push(new Pet("1-1", 6, 6, 2, 10, name, petType, nameobj));
+                petArray.push(new Pet("1-1", 6, 6, 2, 10, name, petType));
                 break;
             case "Bear":
                 var name =
                     nameobj == undefined || nameobj.Bear == "" ? "Bear" : nameobj.Bear;
-                petArray.push(new Pet("2-1", 3, 3, 3, 10, name, petType, nameobj));
+                petArray.push(new Pet("2-1", 3, 3, 3, 10, name, petType));
                 break;
             case "Dragon":
                 var name =
                     nameobj == undefined || nameobj.Dragon == "" ? "Dragon" : nameobj.Dragon;
-                petArray.push(new Pet("3-1", 13, 3, 2, 15, name, petType, nameobj));
+                petArray.push(new Pet("3-1", 13, 3, 2, 15, name, petType));
                 break;
             case "Elizabeth":
                 var name =
                     nameobj == undefined || nameobj.Elizabeth == ""
                         ? "Elizabeth"
                         : nameobj.Elizabeth;
-                petArray.push(new Pet("4-1", 3, 3, 3, 10, name, petType, nameobj));
+                petArray.push(new Pet("4-1", 3, 3, 3, 10, name, petType));
                 break;
             case "pet5":
                 var name =
                     nameobj == undefined || nameobj.pet5 == "" ? "5" : nameobj.pet5;
-                petArray.push(new Pet("5-1", 3, 3, 3, 10, name, petType, nameobj));
+                petArray.push(new Pet("5-1", 3, 3, 3, 10, name, petType));
                 break;
             case "PinkBear":
                 var name =
                     nameobj == undefined || nameobj.PinkBear == "" ? "PinkBear" : nameobj.PinkBear;
-                petArray.push(new Pet("6-1", 3, 3, 3, 20, name, petType, nameobj));
+                petArray.push(new Pet("6-1", 3, 3, 3, 20, name, petType));
                 break;
         }
     });
 });
 
 var petArray = [];
-function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType, petNameObj) {
+function Pet(index, InitPicNum, bathPicNum, walkPicNum, speed, Petname, petType) {
     //object properties
     this.picNum = InitPicNum;
     this.picIndex = index;
