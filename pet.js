@@ -1,9 +1,10 @@
 //create old pet
 chrome.storage.local.get(null, function (obj) {
     console.log(obj.petArray);
-    if(obj.petArray != null){
+    if (obj.petArray != null) {
         for (var i = 0; i < obj.petArray.length; i++) {
-            new Pet(obj.petArray[i].picIndex, obj.petArray[i].picNum, obj.petArray[i].bathPicNum, obj.petArray[i].walkPicNum, obj.petArray[i].picSpeed, obj.petArray[i].petName, obj.petArray[i].petType)
+            console.log(obj.petArray[i].picIndex, obj.petArray[i].picNum, obj.petArray[i].bathPicNum, obj.petArray[i].walkPicNum, obj.petArray[i].eatPicNum, obj.petArray[i].picSpeed, obj.petArray[i].petName, obj.petArray[i].petType);
+            petArray.push(new Pet(obj.petArray[i].picIndex, obj.petArray[i].picNum, obj.petArray[i].bathPicNum, obj.petArray[i].walkPicNum, obj.petArray[i].eatPicNum, obj.petArray[i].picSpeed, obj.petArray[i].petName, obj.petArray[i].petType));
         }
     }
 });
@@ -55,11 +56,12 @@ chrome.runtime.onMessage.addListener(function (request) {
     });
 });
 
-var petArray = [];
+petArray = [];
 function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petname, petType) {
     //object properties
     this.petType = petType;
     this.petName = Petname;
+    this.eatPicNum = eatPicNum;
     this.walkPicNum = walkPicNum;
     this.bathPicNum = bathPicNum;
     this.picNum = InitPicNum;
@@ -174,6 +176,7 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petnam
     };
 
     this.ChangePic = function () {
+        //console.log(this.time, this.picSpeed);
         if (this.time > this.picSpeed) {
             this.picSpeed += this.addPicSpeed;
             if (this.flag >= this.picNum) this.flag = 0;
@@ -368,7 +371,9 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petnam
             //come back home
             comeBackHomeBtn.addEventListener("click", ComeBackHome);
             function ComeBackHome() {
-                $("#" + petDiv.id).hide();
+                $("#" + petDiv.id).remove();
+                delete petArray[petDiv.id.substr(5)];
+
             };
             //close list
             closeListBtn.addEventListener("click", CloseFunctionList);
