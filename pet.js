@@ -211,7 +211,7 @@ function Pet(
   this.expDiv.id = "expDiv" + petArray.length;
   this.expLable = document.createElement("B");
   this.expLable.id = "petexpLable" + petArray.length;
-  this.expContent = document.createTextNode("Exp: " + this.exp);
+  this.expContent = document.createTextNode("Exp: " + this.exp + "/" + (this.level * 100 + 10));
   this.expLable.appendChild(this.expContent);
   //name and edit button
   this.nameDiv = document.createElement("div");
@@ -727,7 +727,7 @@ levelUp = function (levelDom, expDom, petType, level) {
           chrome.storage.local.set(
             { petExp: JSON.stringify(allPetExpObj) },
             function () {
-              expDom.innerHTML = "Exp: 0";
+              expDom.innerHTML = "Exp: 0/" + (level * 100 + 10);
             }
           );
         });
@@ -748,10 +748,12 @@ isLevelUp = function (levelDom, expDom, petType) {
           : JSON.parse(Levelresult.petLevel);
       var thisPetExp = allPetExpObj[petType];
       var thisPetLevel = allPetLevelObj[petType];
-      var thisLevelNeedExp = thisPetLevel * 3 + 10;
+      var thisLevelNeedExp = thisPetLevel * 100 + 10;
       if (thisPetExp >= thisLevelNeedExp) {
         thisPetLevel = thisPetLevel + 1;
         levelUp(levelDom, expDom, petType, thisPetLevel);
+      }else{
+        expDom.innerHTML = "Exp: " + allPetExpObj[petType] + "/" + thisLevelNeedExp;
       }
     });
   });
@@ -816,7 +818,7 @@ expUp = function (levelDom, expDom, petType, upExp) {
       { petExp: JSON.stringify(allPetExpObj) },
       function () {
         //改成經驗值的DOM
-        expDom.innerHTML = "Exp: " + allPetExpObj[petType];
+        //expDom.innerHTML = "Exp: " + allPetExpObj[petType];
         isLevelUp(levelDom, expDom, petType);
       }
     );
