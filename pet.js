@@ -543,8 +543,12 @@ function Pet(
                 ".png"
               );
               $("#petNo" + e.target.id.substr(3).toString()).append(
-                "<img src=" + imgSrc + " style='width:30px' />"
+                "<input type='image' src="+imgSrc+" style='width:30px' id='shit" + i +"' />"  
               );
+              $("#shit"+i).click(function(e){
+                $("#"+e.target.id).hide();
+                expUp(levelLableDom, expLableDom, petType, 20);
+              });
             }
             isCount = false;
             break;
@@ -610,7 +614,6 @@ function Pet(
       }
     }
   };
-
   document
     .getElementsByTagName("head")[0]
     .insertAdjacentHTML(
