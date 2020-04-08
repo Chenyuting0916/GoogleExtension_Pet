@@ -8,11 +8,11 @@ CreateOldPet = function () {
         petArray.push(
           new Pet(
             obj.petArray[i].picIndex,
-            obj.petArray[i].picNum,
+            obj.petArray[i].InitPicNum,
             obj.petArray[i].bathPicNum,
             obj.petArray[i].walkPicNum,
             obj.petArray[i].eatPicNum,
-            obj.petArray[i].picSpeed,
+            obj.petArray[i].addPicSpeed,
             obj.petArray[i].petName,
             JSON.parse(obj.petLevel)[obj.petArray[i].petType],
             JSON.parse(obj.petExp)[obj.petArray[i].petType],
@@ -159,7 +159,7 @@ chrome.runtime.onMessage.addListener(function (request) {
             );
             break;
         }
-
+        console.log(petArray);
         chrome.storage.local.set({ petArray }, function () { });
       });
     });
@@ -304,8 +304,6 @@ function Pet(
     dragSouce.addEventListener("mousedown", dragStart);
 
     function dragStart(e) {
-      if (petArray[e.target.id.substr(5)] != undefined)
-        pp = petArray[e.target.id.substr(5)];
       e.preventDefault();
       //記錄點擊相對被點擊物件的座標
       startX = e.clientX - dragSouce.offsetLeft;
@@ -321,7 +319,12 @@ function Pet(
       y = e.clientY - startY;
       dragSouce.style.left = x + "px";
       dragSouce.style.top = y + "px";
-      console.log(pp);
+
+      console.log(e.target.id);
+      console.log(petArray.length);
+      console.log(petArray[e.target.id.substr(5)]);
+      if (petArray[e.target.id.substr(5)] != undefined)
+        pp = petArray[e.target.id.substr(5)];
       pp.ResetAction();
       pp.action = 0;
       pp.x = x;
@@ -336,6 +339,7 @@ function Pet(
   };
 
   this.ChangePic = function () {
+    // console.log(this.time, this.picSpeed, this.addPicSpeed);
     if (this.time > this.picSpeed) {
       this.picSpeed += this.addPicSpeed;
       if (this.flag >= this.picNum) this.flag = 0;
@@ -357,7 +361,7 @@ function Pet(
       this.picIndex = this.picIndex.substr(4);
     if (this.picIndex.indexOf("eat") !== -1)
       this.picIndex = this.picIndex.substr(3);
-    if (this.picNum != InitPicNum) this.picNum = this.InitPicNum;
+    if (this.picNum !== this.InitPicNum) this.picNum = this.InitPicNum;
     this.action = Math.floor(Math.random() * 3); //0~2
     this.time = 0;
     this.picSpeed = this.addPicSpeed;
@@ -583,15 +587,19 @@ function Pet(
         "display:inline; margin-right: 5px;border-radius: 25px;";
       petFunctionDiv.style = "text-align:center;margin-top: 10px;";
 
-      //come back home
+      //go back home
       comeBackHomeBtn.addEventListener("click", ComeBackHome);
       function ComeBackHome() {
-        chrome.storage.local.get(null, function (obj) {
-          obj.petArray.splice(petDiv.id.substr(5), 1);
-        });
+        // chrome.storage.local.get(null, function (obj) {
+        //   obj.petArray.splice(petDiv.id.substr(5), 1);
+        // });
         petArray.splice(petDiv.id.substr(5), 1);
+        petArray.forEach((pet) => {
+          pet.ResetAction();
+        });
         chrome.storage.local.set({ petArray }, function () { });
         $("#" + petDiv.id).remove();
+        window.location.reload();
       }
       //close list
       closeListBtn.addEventListener("click", CloseFunctionList);
