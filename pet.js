@@ -1,13 +1,16 @@
+// chrome.storage.local.clear();
+var petArray = [];
 //create old pet
-chrome.storage.local.get(null, function (obj) {
-    console.log(obj);
-    if (obj.petArray != null) {
-        for (var i = 0; i < obj.petArray.length; i++) {
-            console.log(obj.petArray[i].picIndex, obj.petArray[i].picNum, obj.petArray[i].bathPicNum, obj.petArray[i].walkPicNum, obj.petArray[i].eatPicNum, obj.petArray[i].picSpeed, obj.petArray[i].petName, obj.petArray[i].petLevel, obj.petArray[i].petExp, obj.petArray[i].petType);
-            petArray.push(new Pet(obj.petArray[i].picIndex, obj.petArray[i].picNum, obj.petArray[i].bathPicNum, obj.petArray[i].walkPicNum, obj.petArray[i].eatPicNum, obj.petArray[i].picSpeed, obj.petArray[i].petName, obj.petArray[i].petLevel, obj.petArray[i].petExp, obj.petArray[i].petType));
+CreateOldPet = function () {
+    chrome.storage.local.get(null, function (obj) {
+        if (obj.petArray != null) {
+            for (var i = 0; i < obj.petArray.length; i++) {
+                petArray.push(new Pet(obj.petArray[i].picIndex, obj.petArray[i].picNum, obj.petArray[i].bathPicNum, obj.petArray[i].walkPicNum, obj.petArray[i].eatPicNum, obj.petArray[i].picSpeed, obj.petArray[i].petName, JSON.parse(obj.petLevel)[obj.petArray[i].petType], JSON.parse(obj.petExp)[obj.petArray[i].petType], obj.petArray[i].petType));
+            }
         }
-    }
-});
+    });
+}
+CreateOldPet();
 
 //create new pet
 chrome.runtime.onMessage.addListener(function (request) {
@@ -135,18 +138,15 @@ chrome.runtime.onMessage.addListener(function (request) {
                         break;
                 }
                 chrome.storage.local.set({ petArray }, function () {
-                    console.log(petArray);
                 });
             });
         });
     });
 });
 
-var petArray = [];
+
 function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petname, petLevel, petExp, petType) {
     //object properties
-    this.petExp = petExp;
-    this.petLevel = petLevel;
     this.petType = petType;
     this.petName = Petname;
     this.eatPicNum = eatPicNum;
@@ -290,7 +290,6 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petnam
     };
 
     this.ChangePic = function () {
-        //console.log(this.time, this.picSpeed);
         if (this.time > this.picSpeed) {
             this.picSpeed += this.addPicSpeed;
             if (this.flag >= this.picNum) this.flag = 0;
@@ -479,6 +478,7 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petnam
                 expUp(levelLableDom, expLableDom, petType, 30);
             }, 4000);
         });
+       
         //open list
         openListBtn.addEventListener("click", OpenFunctionList);
         function OpenFunctionList() {
@@ -492,9 +492,13 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petnam
             //come back home
             comeBackHomeBtn.addEventListener("click", ComeBackHome);
             function ComeBackHome() {
+                chrome.storage.local.get(null, function (obj) {
+                    obj.petArray.splice(petDiv.id.substr(5), 1);
+                });
+                petArray.splice(petDiv.id.substr(5), 1);
+                chrome.storage.local.set({ petArray }, function () {
+                });
                 $("#" + petDiv.id).remove();
-                delete petArray[petDiv.id.substr(5)];
-
             };
             //close list
             closeListBtn.addEventListener("click", CloseFunctionList);
