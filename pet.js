@@ -542,6 +542,7 @@ function Pet(
       }
       setTimeout(function () {
         $(".fa-utensils").attr("disabled", false);
+        expUp(levelLableDom, expLableDom, petType, 30);
       }, 4000);
     });
     //bathe
