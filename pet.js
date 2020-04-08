@@ -441,11 +441,6 @@ function Pet(index, InitPicNum, bathPicNum, walkPicNum, eatPicNum, speed, Petnam
             comeBackHomeBtn.style = "display:inline; margin-right: 5px;border-radius: 25px;";
             petFunctionDiv.style = "text-align:center;margin-top: 10px;";
 
-            //feed
-            feedingBtn.addEventListener("click", Feeding);
-            function Feeding() {
-                expUp(levelLableDom, expLableDom, petType, 30);
-            };
             //come back home
             comeBackHomeBtn.addEventListener("click", ComeBackHome);
             function ComeBackHome() {
