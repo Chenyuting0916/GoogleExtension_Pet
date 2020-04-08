@@ -181,6 +181,10 @@ function Pet(
   petType
 ) {
   //object properties
+  this.flag = 0;
+  this.time = 0;
+  this.action = Math.floor(Math.random() * 3); //0~2
+  this.addPicSpeed = speed;
   this.InitPicNum = InitPicNum;
   this.petType = petType;
   this.petName = Petname;
@@ -359,10 +363,7 @@ function Pet(
     this.picSpeed = this.addPicSpeed;
   };
 
-  this.flag = 0;
-  this.time = 0;
-  this.action = Math.floor(Math.random() * 3); //0~2
-  this.addPicSpeed = this.picSpeed;
+
   this.update = function () {
     this.time++;
     this.ChangePic();
@@ -752,7 +753,7 @@ isLevelUp = function (levelDom, expDom, petType) {
       if (thisPetExp >= thisLevelNeedExp) {
         thisPetLevel = thisPetLevel + 1;
         levelUp(levelDom, expDom, petType, thisPetLevel);
-      }else{
+      } else {
         expDom.innerHTML = "Exp: " + allPetExpObj[petType] + "/" + thisLevelNeedExp;
       }
     });
