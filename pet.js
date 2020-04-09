@@ -168,6 +168,7 @@ chrome.runtime.onMessage.addListener(function (request) {
 
 var eatFrequency = [];
 var isCount = true;
+var shitCount = 0;
 function Pet(
   index,
   InitPicNum,
@@ -543,12 +544,13 @@ function Pet(
                 ".png"
               );
               $("#petNo" + e.target.id.substr(3).toString()).append(
-                "<input type='image' src="+imgSrc+" style='width:30px' id='shit" + i +"' />"  
+                "<input type='image' src="+imgSrc+" style='width:30px' id='shit" + shitCount +"' />"  
               );
-              $("#shit"+i).click(function(e){
+              $("#shit"+shitCount).click(function(e){
                 $("#"+e.target.id).hide();
                 expUp(levelLableDom, expLableDom, petType, 20);
               });
+              shitCount++;
             }
             isCount = false;
             break;
