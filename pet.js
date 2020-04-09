@@ -110,7 +110,7 @@ chrome.runtime.onMessage.addListener(function (request) {
             var exp =
               expObj == undefined || expObj.Dragon == "" ? 0 : expObj.Dragon;
             petArray.push(
-              new Pet("3-1", 13, 3, 2, 0, 15, name, level, exp, petType)
+              new Pet("3-1", 13, 3, 2, 4, 15, name, level, exp, petType)
             );
             break;
           case "Elizabeth":
@@ -159,7 +159,6 @@ chrome.runtime.onMessage.addListener(function (request) {
             );
             break;
         }
-        console.log(petArray);
         chrome.storage.local.set({ petArray }, function () { });
       });
     });
@@ -321,9 +320,6 @@ function Pet(
       dragSouce.style.left = x + "px";
       dragSouce.style.top = y + "px";
 
-      console.log(e.target.id);
-      console.log(petArray.length);
-      console.log(petArray[e.target.id.substr(5)]);
       if (petArray[e.target.id.substr(5)] != undefined)
         pp = petArray[e.target.id.substr(5)];
       pp.ResetAction();
