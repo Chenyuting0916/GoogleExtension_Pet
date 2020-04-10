@@ -13,7 +13,7 @@ CreateOldPet = function () {
             obj.petArray[i].walkPicNum,
             obj.petArray[i].eatPicNum,
             obj.petArray[i].addPicSpeed,
-            obj.petArray[i].petName,
+            JSON.parse(obj.Petname)[obj.petArray[i].petType],
             JSON.parse(obj.petLevel)[obj.petArray[i].petType],
             JSON.parse(obj.petExp)[obj.petArray[i].petType],
             obj.petArray[i].petType
@@ -289,8 +289,6 @@ function Pet(
 
   document.getElementsByTagName("body")[0].appendChild(this.petDiv);
 
-  document.getElementsByTagName("body")[0].appendChild(this.petDiv);
-
   this.gravity = 0.15;
   this.gravitySpeed = 0;
 
@@ -426,12 +424,12 @@ function Pet(
     let nameLabel = document.querySelector("#petNameLable" + petArray.length);
     let namediv = document.querySelector("#nameDiv" + petArray.length);
     btnEdit.addEventListener("click", editNameLabel);
-    function editNameLabel() {
+    function editNameLabel(e) {
       btnEdit.style = "display:none;";
       nameLabel.style = "display:none;";
       nameInput = document.createElement("input");
       nameInput.setAttribute("type", "text");
-      nameInput.setAttribute("value", Petname);
+      nameInput.setAttribute("value", petArray[e.target.id.substr(7)].petName);
       namediv.appendChild(nameInput);
       nameInput.focus();
       saveBtn = document.createElement("button");
@@ -486,6 +484,7 @@ function Pet(
             { Petname: JSON.stringify(nameObject) },
             function () {
               nameLabel.innerHTML = nameInput.value;
+              petArray[btnEdit.id.substr(7)].petName = nameInput.value;
             }
           );
         });
